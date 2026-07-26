@@ -3,17 +3,15 @@
 import { motion } from "framer-motion";
 import MagneticButton from "@/components/shared/MagneticButton";
 import DraggableWindow from "@/components/windows/DraggableWindow";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { ArrowRight, Code, Palette, Rocket } from "lucide-react";
 import Link from "next/link";
 
 export default function Home() {
   const [focusedWindow, setFocusedWindow] = useState<string>("hero");
-  const [mounted, setMounted] = useState(false);
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const w = typeof window !== "undefined" ? window.innerWidth : 1024;
+  const h = typeof window !== "undefined" ? window.innerHeight : 768;
 
   return (
     <div className="relative min-h-screen w-full overflow-hidden bg-mesh">
@@ -39,13 +37,12 @@ export default function Home() {
         </motion.p>
       </div>
 
-      {mounted && (
         <>
           {/* Floating Object 1: Divisi Programming */}
           <DraggableWindow
             title="Divisi Programming"
-            initialX={Math.max(20, window.innerWidth * 0.1)}
-            initialY={Math.max(100, window.innerHeight * 0.15)}
+            initialX={Math.max(20, w * 0.1)}
+            initialY={Math.max(100, h * 0.15)}
             className="w-[280px] h-[200px]"
             isFocused={focusedWindow === "programming"}
             onFocus={() => setFocusedWindow("programming")}
@@ -61,8 +58,8 @@ export default function Home() {
           {/* Floating Object 2: Divisi Desain Grafis */}
           <DraggableWindow
             title="Divisi Desain Grafis"
-            initialX={Math.min(window.innerWidth - 300, window.innerWidth * 0.7)}
-            initialY={Math.max(150, window.innerHeight * 0.2)}
+            initialX={Math.min(w - 300, w * 0.7)}
+            initialY={Math.max(150, h * 0.2)}
             className="w-[280px] h-[200px]"
             isFocused={focusedWindow === "desain"}
             onFocus={() => setFocusedWindow("desain")}
@@ -78,8 +75,8 @@ export default function Home() {
           {/* Floating Object 3: Project Terbaru */}
           <DraggableWindow
             title="Project Terbaru"
-            initialX={Math.max(20, window.innerWidth * 0.2)}
-            initialY={Math.min(window.innerHeight - 250, window.innerHeight * 0.6)}
+            initialX={Math.max(20, w * 0.2)}
+            initialY={Math.min(h - 250, h * 0.6)}
             className="w-[320px] h-[160px]"
             isFocused={focusedWindow === "project"}
             onFocus={() => setFocusedWindow("project")}
@@ -92,7 +89,6 @@ export default function Home() {
             </div>
           </DraggableWindow>
         </>
-      )}
 
       {/* Floating Object 4: Gabung ITClub CTA */}
       <div className="absolute right-8 bottom-32 md:right-16 md:bottom-24 z-50">

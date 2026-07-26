@@ -4,7 +4,7 @@ import { motion, useDragControls, useMotionValue, useTransform, useVelocity, use
 import { useState, useRef, useEffect } from "react";
 import clsx from "clsx";
 import { twMerge } from "tailwind-merge";
-import { GripHorizontal, X } from "lucide-react";
+import { GripHorizontal } from "lucide-react";
 
 interface DraggableWindowProps {
   title: string;

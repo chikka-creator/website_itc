@@ -1,16 +1,13 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import DraggableWindow from "@/components/windows/DraggableWindow";
 import { Code2, Palette } from "lucide-react";
 
 export default function DivisiPage() {
   const [focusedWindow, setFocusedWindow] = useState<string>("programming");
-  const [mounted, setMounted] = useState(false);
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const w = typeof window !== "undefined" ? window.innerWidth : 1024;
 
   return (
     <div className="relative min-h-screen w-full overflow-hidden bg-mesh pt-24 px-6">
@@ -23,12 +20,11 @@ export default function DivisiPage() {
         </p>
       </div>
 
-      {mounted && (
         <div className="relative h-[600px] max-w-6xl mx-auto">
           {/* Programming Window */}
           <DraggableWindow
             title="Programming"
-            initialX={Math.max(0, (window.innerWidth - 800) / 2)}
+            initialX={Math.max(0, (w - 800) / 2)}
             initialY={50}
             className="w-full max-w-[400px] min-h-[450px]"
             isFocused={focusedWindow === "programming"}
@@ -62,7 +58,7 @@ export default function DivisiPage() {
 
               {/* TODO(DATA): Placeholder for actual programming activity photo */}
               <div className="mt-4 h-40 rounded-xl bg-gradient-to-br from-[var(--color-brand-navy-800)] to-transparent border border-white/5 flex items-center justify-center overflow-hidden">
-                <span className="text-xs font-semibold text-white/20 uppercase tracking-widest text-center px-4">
+                <span className="text-xs font-semibold text-white/40 uppercase tracking-widest text-center px-4">
                   Data Sementara <br /> Foto Kegiatan
                 </span>
               </div>
@@ -72,7 +68,7 @@ export default function DivisiPage() {
           {/* Desain Grafis Window */}
           <DraggableWindow
             title="Desain Grafis"
-            initialX={Math.min(window.innerWidth - 420, (window.innerWidth - 400) / 2 + 100)}
+            initialX={Math.min(w - 420, (w - 400) / 2 + 100)}
             initialY={100}
             className="w-full max-w-[400px] min-h-[450px]"
             isFocused={focusedWindow === "desain"}
@@ -106,14 +102,13 @@ export default function DivisiPage() {
 
               {/* TODO(DATA): Placeholder for actual graphic design activity photo */}
               <div className="mt-4 h-40 rounded-xl bg-gradient-to-bl from-[var(--color-brand-navy-800)] to-transparent border border-white/5 flex items-center justify-center overflow-hidden">
-                <span className="text-xs font-semibold text-white/20 uppercase tracking-widest text-center px-4">
+                <span className="text-xs font-semibold text-white/40 uppercase tracking-widest text-center px-4">
                   Data Sementara <br /> Foto Kegiatan
                 </span>
               </div>
             </div>
           </DraggableWindow>
         </div>
-      )}
-    </div>
-  );
-}
+      </div>
+    );
+  }

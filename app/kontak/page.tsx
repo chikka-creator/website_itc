@@ -84,7 +84,7 @@ export default function KontakPage() {
         response = null;
         break;
       default:
-        response = <p className="text-red-400 ml-4">Perintah '{trimmed}' tidak ditemukan. Ketik 'help' untuk daftar perintah.</p>;
+        response = <p className="text-red-400 ml-4">Perintah &apos;{trimmed}&apos; tidak ditemukan. Ketik &apos;help&apos; untuk daftar perintah.</p>;
     }
 
     setHistory((prev) => [

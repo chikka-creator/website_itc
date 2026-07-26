@@ -3,11 +3,12 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Info, Layers, LayoutGrid, Terminal } from "lucide-react";
+import { Home, Info, Layers, LayoutGrid, Terminal, LogIn, LayoutDashboard } from "lucide-react";
 import clsx from "clsx";
 import { twMerge } from "tailwind-merge";
+import { useSession } from "next-auth/react";
 
-const navItems = [
+const baseNavItems = [
   { href: "/", label: "Beranda", icon: Home },
   { href: "/tentang", label: "Tentang", icon: Info },
   { href: "/divisi", label: "Divisi", icon: Layers },
@@ -17,6 +18,14 @@ const navItems = [
 
 export default function Dock() {
   const pathname = usePathname();
+  const { data: session } = useSession();
+  const role = (session?.user as any)?.role;
+
+  const authItem = session 
+    ? { href: role === "admin" ? "/admin/dashboard" : "/dashboard", label: role === "admin" ? "Admin" : "Dashboard", icon: role === "admin" ? LayoutDashboard : LayoutDashboard }
+    : { href: "/login", label: "Login", icon: LogIn };
+
+  const navItems = [...baseNavItems, authItem];
 
   return (
     <div className="fixed bottom-6 left-0 right-0 z-50 flex justify-center pointer-events-none">
@@ -31,7 +40,7 @@ export default function Dock() {
           const Icon = item.icon;
 
           return (
-            <Link key={item.href} href={item.href} className="relative group">
+            <Link key={item.href} href={item.href} className="relative group" aria-label={item.label}>
               <motion.div
                 whileHover={{ scale: 1.2, y: -4 }}
                 whileTap={{ scale: 0.95 }}
@@ -41,7 +50,8 @@ export default function Dock() {
                     "flex flex-col items-center justify-center w-12 h-12 rounded-xl transition-colors duration-300",
                     isActive
                       ? "bg-white/10 text-white"
-                      : "text-white/60 hover:text-white hover:bg-white/5"
+                      : "text-white/60 hover:text-white hover:bg-white/5",
+                    item.href === "/login" || item.href === "/dashboard" ? "text-[var(--color-brand-amber)] hover:text-[var(--color-brand-amber)]" : ""
                   )
                 )}
               >

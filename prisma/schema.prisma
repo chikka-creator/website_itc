@@ -1,0 +1,28 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  password  String
+  role      String   @default("member") // admin, member
+  createdAt DateTime @default(now())
+  tasks     TaskSubmission[]
+}
+
+model TaskSubmission {
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  linkUrl     String
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  createdAt   DateTime @default(now())
+}
