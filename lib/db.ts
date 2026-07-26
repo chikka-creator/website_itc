@@ -1,4 +1,4 @@
-import { Pool } from "pg";
+import { Pool, PoolClient } from "pg";
 import { randomUUID } from "crypto";
 
 // Singleton connection pool — survives across hot reloads in dev,
@@ -17,52 +17,74 @@ function getPool(): Pool {
   return pool;
 }
 
-// ====== Schema: create tables on startup ======
+// ====== Schema: create tables on first use ======
 
-async function ensureSchema() {
-  const db = getPool();
-  await db.query(`
-    CREATE TABLE IF NOT EXISTS users (
-      id TEXT PRIMARY KEY,
-      name TEXT NOT NULL,
-      email TEXT UNIQUE NOT NULL,
-      password TEXT NOT NULL,
-      role TEXT NOT NULL DEFAULT 'member',
-      created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
-    );
-  `);
-  await db.query(`
-    CREATE TABLE IF NOT EXISTS task_submissions (
-      id TEXT PRIMARY KEY,
-      title TEXT NOT NULL,
-      description TEXT NOT NULL,
-      link_url TEXT NOT NULL,
-      user_id TEXT NOT NULL,
-      created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-      FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-    );
-  `);
-  await db.query(`
-    CREATE TABLE IF NOT EXISTS projects (
-      id TEXT PRIMARY KEY,
-      title TEXT NOT NULL,
-      description TEXT NOT NULL,
-      category TEXT NOT NULL DEFAULT 'Programming',
-      link_url TEXT,
-      image_url TEXT,
-      author_name TEXT,
-      is_featured INTEGER NOT NULL DEFAULT 1,
-      created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
-    );
-  `);
+let schemaReady: Promise<void> | null = null;
+
+async function ensureSchema(): Promise<void> {
+  const client: PoolClient = await getPool().connect();
+  try {
+    await client.query("BEGIN");
+
+    // Drop old tables if they exist (handles TEXT created_at from previous bad deploy)
+    await client.query("DROP TABLE IF EXISTS task_submissions CASCADE");
+    await client.query("DROP TABLE IF EXISTS projects CASCADE");
+    await client.query("DROP TABLE IF EXISTS users CASCADE");
+
+    await client.query(`
+      CREATE TABLE users (
+        id TEXT PRIMARY KEY,
+        name TEXT NOT NULL,
+        email TEXT UNIQUE NOT NULL,
+        password TEXT NOT NULL,
+        role TEXT NOT NULL DEFAULT 'member',
+        created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+      )
+    `);
+    await client.query(`
+      CREATE TABLE task_submissions (
+        id TEXT PRIMARY KEY,
+        title TEXT NOT NULL,
+        description TEXT NOT NULL,
+        link_url TEXT NOT NULL,
+        user_id TEXT NOT NULL,
+        created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+      )
+    `);
+    await client.query(`
+      CREATE TABLE projects (
+        id TEXT PRIMARY KEY,
+        title TEXT NOT NULL,
+        description TEXT NOT NULL,
+        category TEXT NOT NULL DEFAULT 'Programming',
+        link_url TEXT,
+        image_url TEXT,
+        author_name TEXT,
+        is_featured INTEGER NOT NULL DEFAULT 1,
+        created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+      )
+    `);
+
+    await client.query("COMMIT");
+  } catch (err) {
+    await client.query("ROLLBACK");
+    throw err;
+  } finally {
+    client.release();
+  }
 }
 
-// Run schema init eagerly once at module load.
-// This is safe for both dev and Vercel serverless: the first import
-// triggers table creation, subsequent imports reuse the same Pool.
-ensureSchema().catch((err) => {
-  console.error("Failed to ensure database schema:", err);
-});
+/**
+ * Ensures schema is ready exactly once. All DB functions await this
+ * before running their queries.
+ */
+function getSchemaReady(): Promise<void> {
+  if (!schemaReady) {
+    schemaReady = ensureSchema();
+  }
+  return schemaReady;
+}
 
 // ====== User Functions ======
 
@@ -76,12 +98,14 @@ export interface User {
 }
 
 export async function findUserByEmail(email: string): Promise<User | undefined> {
+  await getSchemaReady();
   const db = getPool();
   const result = await db.query("SELECT * FROM users WHERE email = $1", [email]);
   return result.rows[0] as User | undefined;
 }
 
 export async function findUserById(id: string): Promise<User | undefined> {
+  await getSchemaReady();
   const db = getPool();
   const result = await db.query("SELECT * FROM users WHERE id = $1", [id]);
   return result.rows[0] as User | undefined;
@@ -93,6 +117,7 @@ export async function createUser(
   hashedPassword: string,
   role: string = "member"
 ): Promise<User> {
+  await getSchemaReady();
   const db = getPool();
   const id = randomUUID();
   await db.query(
@@ -106,6 +131,7 @@ export async function updateUserRole(
   email: string,
   role: string
 ): Promise<User | undefined> {
+  await getSchemaReady();
   const db = getPool();
   await db.query("UPDATE users SET role = $1 WHERE email = $2", [role, email]);
   return findUserByEmail(email);
@@ -126,6 +152,7 @@ export interface TaskSubmission {
 }
 
 export async function getTasksByUserId(userId: string): Promise<TaskSubmission[]> {
+  await getSchemaReady();
   const db = getPool();
   const result = await db.query(
     `SELECT t.*, u.name as user_name, u.email as user_email
@@ -139,6 +166,7 @@ export async function getTasksByUserId(userId: string): Promise<TaskSubmission[]
 }
 
 export async function getAllTasks(): Promise<TaskSubmission[]> {
+  await getSchemaReady();
   const db = getPool();
   const result = await db.query(
     `SELECT t.*, u.name as user_name, u.email as user_email
@@ -155,6 +183,7 @@ export async function createTask(
   linkUrl: string,
   userId: string
 ): Promise<TaskSubmission> {
+  await getSchemaReady();
   const db = getPool();
   const id = randomUUID();
   await db.query(
@@ -166,6 +195,7 @@ export async function createTask(
 }
 
 export async function deleteTask(id: string): Promise<boolean> {
+  await getSchemaReady();
   const db = getPool();
   const result = await db.query("DELETE FROM task_submissions WHERE id = $1", [id]);
   return result.rowCount !== null && result.rowCount > 0;
@@ -186,12 +216,14 @@ export interface Project {
 }
 
 export async function getAllProjects(): Promise<Project[]> {
+  await getSchemaReady();
   const db = getPool();
   const result = await db.query("SELECT * FROM projects ORDER BY created_at DESC");
   return result.rows as Project[];
 }
 
 export async function getFeaturedProjects(): Promise<Project[]> {
+  await getSchemaReady();
   const db = getPool();
   const result = await db.query(
     "SELECT * FROM projects WHERE is_featured = 1 ORDER BY created_at DESC"
@@ -207,6 +239,7 @@ export async function createProject(data: {
   image_url?: string;
   author_name?: string;
 }): Promise<Project> {
+  await getSchemaReady();
   const db = getPool();
   const id = randomUUID();
   await db.query(
@@ -227,6 +260,7 @@ export async function createProject(data: {
 }
 
 export async function deleteProject(id: string): Promise<boolean> {
+  await getSchemaReady();
   const db = getPool();
   const result = await db.query("DELETE FROM projects WHERE id = $1", [id]);
   return result.rowCount !== null && result.rowCount > 0;
@@ -244,6 +278,7 @@ export async function updateProject(
     is_featured?: number;
   }
 ): Promise<Project | undefined> {
+  await getSchemaReady();
   const db = getPool();
   const fields: string[] = [];
   const values: unknown[] = [];
