@@ -20,7 +20,7 @@ type Task = {
 };
 
 export default function DashboardPage() {
-  const { data: session, status } = useSession();
+  const { data: session, status, update } = useSession();
   const router = useRouter();
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loadingTasks, setLoadingTasks] = useState(true);
@@ -37,8 +37,17 @@ export default function DashboardPage() {
       router.push("/login");
     } else if (status === "authenticated") {
       fetchTasks();
+      // Check role changes every 5 seconds and redirect if role changed to admin
+      const roleCheck = setInterval(async () => {
+        const updated = await update();
+        const role = (updated as any)?.user?.role;
+        if (role === "admin") {
+          router.push("/admin/dashboard");
+        }
+      }, 5000);
+      return () => clearInterval(roleCheck);
     }
-  }, [status, router]);
+  }, [status, router, update]);
 
   const fetchTasks = async () => {
     try {

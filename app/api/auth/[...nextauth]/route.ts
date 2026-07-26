@@ -1,7 +1,7 @@
 import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
-import { findUserByEmail } from "@/lib/db";
+import { findUserByEmail, findUserById } from "@/lib/db";
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -43,6 +43,7 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
+        // On first login, store user id and role in token
         token.role = (user as any).role;
         token.id = user.id;
       }
@@ -50,8 +51,18 @@ export const authOptions: NextAuthOptions = {
     },
     async session({ session, token }) {
       if (session.user) {
-        (session.user as any).role = token.role;
         (session.user as any).id = token.id;
+        // Always fetch fresh role from DB so role changes take effect immediately
+        try {
+          const freshUser = await findUserById(token.id as string);
+          if (freshUser) {
+            (session.user as any).role = freshUser.role;
+          } else {
+            (session.user as any).role = token.role;
+          }
+        } catch {
+          (session.user as any).role = token.role;
+        }
       }
       return session;
     }

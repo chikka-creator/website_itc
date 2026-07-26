@@ -32,7 +32,7 @@ type Project = {
 type ActiveTab = "tasks" | "projects";
 
 export default function AdminDashboardPage() {
-  const { data: session, status } = useSession();
+  const { data: session, status, update } = useSession();
   const router = useRouter();
   const [tasks, setTasks] = useState<Task[]>([]);
   const [projects, setProjects] = useState<Project[]>([]);
@@ -63,9 +63,18 @@ export default function AdminDashboardPage() {
       } else {
         fetchTasks();
         fetchProjects();
+        // Poll for role changes every 5 seconds — if demoted, redirect to member dashboard
+        const roleCheck = setInterval(async () => {
+          const updated = await update();
+          const role = (updated as any)?.user?.role;
+          if (role !== "admin") {
+            router.push("/dashboard");
+          }
+        }, 5000);
+        return () => clearInterval(roleCheck);
       }
     }
-  }, [status, router, session]);
+  }, [status, router, session, update]);
 
   const fetchTasks = async () => {
     try {
