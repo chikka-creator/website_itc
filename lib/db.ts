@@ -121,7 +121,7 @@ export async function createUser(
   const db = getPool();
   const id = randomUUID();
   await db.query(
-    "INSERT INTO users (id, name, email, password, role) VALUES ($1, $2, $3, $4)",
+    "INSERT INTO users (id, name, email, password, role) VALUES ($1, $2, $3, $4, $5)",
     [id, name, email, hashedPassword, role]
   );
   return (await findUserById(id)) as User;
