@@ -34,10 +34,10 @@ export async function POST(req: Request) {
       },
       { status: 201 }
     );
-  } catch (error) {
+  } catch (error: any) {
     console.error("Error during registration:", error);
     return NextResponse.json(
-      { message: "Terjadi kesalahan pada server" },
+      { message: "Terjadi kesalahan pada server", detail: error?.message || String(error) },
       { status: 500 }
     );
   }
