@@ -63,15 +63,19 @@ export default function AdminDashboardPage() {
       } else {
         fetchTasks();
         fetchProjects();
-        // Poll for role changes every 5 seconds — if demoted, redirect to member dashboard
-        const roleCheck = setInterval(async () => {
-          const updated = await update();
-          const role = (updated as any)?.user?.role;
-          if (role !== "admin") {
-            router.push("/dashboard");
+
+        // When user comes back to this tab, refresh session and check role
+        const onVisible = async () => {
+          if (document.visibilityState === "visible") {
+            const updated = await update();
+            const newRole = (updated as any)?.user?.role;
+            if (newRole !== "admin") {
+              router.push("/dashboard");
+            }
           }
-        }, 5000);
-        return () => clearInterval(roleCheck);
+        };
+        document.addEventListener("visibilitychange", onVisible);
+        return () => document.removeEventListener("visibilitychange", onVisible);
       }
     }
   }, [status, router, session, update]);

@@ -37,15 +37,19 @@ export default function DashboardPage() {
       router.push("/login");
     } else if (status === "authenticated") {
       fetchTasks();
-      // Check role changes every 5 seconds and redirect if role changed to admin
-      const roleCheck = setInterval(async () => {
-        const updated = await update();
-        const role = (updated as any)?.user?.role;
-        if (role === "admin") {
-          router.push("/admin/dashboard");
+
+      // When user comes back to this tab, refresh session and check role
+      const onVisible = async () => {
+        if (document.visibilityState === "visible") {
+          const updated = await update();
+          const role = (updated as any)?.user?.role;
+          if (role === "admin") {
+            router.push("/admin/dashboard");
+          }
         }
-      }, 5000);
-      return () => clearInterval(roleCheck);
+      };
+      document.addEventListener("visibilitychange", onVisible);
+      return () => document.removeEventListener("visibilitychange", onVisible);
     }
   }, [status, router, update]);
 
