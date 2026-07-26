@@ -28,19 +28,21 @@ async function ensureSchema() {
       email TEXT UNIQUE NOT NULL,
       password TEXT NOT NULL,
       role TEXT NOT NULL DEFAULT 'member',
-      created_at TEXT NOT NULL DEFAULT (NOW() AT TIME ZONE 'utc')
+      created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
     );
-
+  `);
+  await db.query(`
     CREATE TABLE IF NOT EXISTS task_submissions (
       id TEXT PRIMARY KEY,
       title TEXT NOT NULL,
       description TEXT NOT NULL,
       link_url TEXT NOT NULL,
       user_id TEXT NOT NULL,
-      created_at TEXT NOT NULL DEFAULT (NOW() AT TIME ZONE 'utc'),
+      created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
       FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
     );
-
+  `);
+  await db.query(`
     CREATE TABLE IF NOT EXISTS projects (
       id TEXT PRIMARY KEY,
       title TEXT NOT NULL,
@@ -50,7 +52,7 @@ async function ensureSchema() {
       image_url TEXT,
       author_name TEXT,
       is_featured INTEGER NOT NULL DEFAULT 1,
-      created_at TEXT NOT NULL DEFAULT (NOW() AT TIME ZONE 'utc')
+      created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
     );
   `);
 }
