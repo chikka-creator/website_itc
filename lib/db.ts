@@ -24,15 +24,8 @@ let schemaReady: Promise<void> | null = null;
 async function ensureSchema(): Promise<void> {
   const client: PoolClient = await getPool().connect();
   try {
-    await client.query("BEGIN");
-
-    // Drop old tables if they exist (handles TEXT created_at from previous bad deploy)
-    await client.query("DROP TABLE IF EXISTS task_submissions CASCADE");
-    await client.query("DROP TABLE IF EXISTS projects CASCADE");
-    await client.query("DROP TABLE IF EXISTS users CASCADE");
-
     await client.query(`
-      CREATE TABLE users (
+      CREATE TABLE IF NOT EXISTS users (
         id TEXT PRIMARY KEY,
         name TEXT NOT NULL,
         email TEXT UNIQUE NOT NULL,
@@ -42,7 +35,7 @@ async function ensureSchema(): Promise<void> {
       )
     `);
     await client.query(`
-      CREATE TABLE task_submissions (
+      CREATE TABLE IF NOT EXISTS task_submissions (
         id TEXT PRIMARY KEY,
         title TEXT NOT NULL,
         description TEXT NOT NULL,
@@ -53,7 +46,7 @@ async function ensureSchema(): Promise<void> {
       )
     `);
     await client.query(`
-      CREATE TABLE projects (
+      CREATE TABLE IF NOT EXISTS projects (
         id TEXT PRIMARY KEY,
         title TEXT NOT NULL,
         description TEXT NOT NULL,
@@ -65,10 +58,8 @@ async function ensureSchema(): Promise<void> {
         created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
       )
     `);
-
-    await client.query("COMMIT");
   } catch (err) {
-    await client.query("ROLLBACK");
+    console.error("Failed to ensure schema:", err);
     throw err;
   } finally {
     client.release();
