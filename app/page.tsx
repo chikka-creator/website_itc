@@ -41,9 +41,9 @@ export default function Home() {
           {/* Floating Object 1: Divisi Programming */}
           <DraggableWindow
             title="Divisi Programming"
-            initialX={Math.max(20, w * 0.1)}
+            initialX={Math.max(16, Math.min(w - 290, w * 0.1))}
             initialY={Math.max(100, h * 0.15)}
-            className="w-[280px] h-[200px]"
+            className="w-[280px] max-w-[90vw] h-[200px]"
             isFocused={focusedWindow === "programming"}
             onFocus={() => setFocusedWindow("programming")}
           >
@@ -58,9 +58,9 @@ export default function Home() {
           {/* Floating Object 2: Divisi Desain Grafis */}
           <DraggableWindow
             title="Divisi Desain Grafis"
-            initialX={Math.min(w - 300, w * 0.7)}
+            initialX={Math.max(16, Math.min(w - 290, w * 0.7))}
             initialY={Math.max(150, h * 0.2)}
-            className="w-[280px] h-[200px]"
+            className="w-[280px] max-w-[90vw] h-[200px]"
             isFocused={focusedWindow === "desain"}
             onFocus={() => setFocusedWindow("desain")}
           >
@@ -75,9 +75,9 @@ export default function Home() {
           {/* Floating Object 3: Project Terbaru */}
           <DraggableWindow
             title="Project Terbaru"
-            initialX={Math.max(20, w * 0.2)}
+            initialX={Math.max(16, Math.min(w - 330, w * 0.2))}
             initialY={Math.min(h - 250, h * 0.6)}
-            className="w-[320px] h-[160px]"
+            className="w-[320px] max-w-[90vw] h-[160px]"
             isFocused={focusedWindow === "project"}
             onFocus={() => setFocusedWindow("project")}
           >

@@ -63,7 +63,7 @@ export default function TentangPage() {
   return (
     <div ref={containerRef} className="min-h-screen bg-[var(--color-brand-navy-900)] pb-32">
       {/* Hero Section */}
-      <section className="hero-section relative h-screen flex flex-col items-center justify-center overflow-hidden">
+      <section className="hero-section relative min-h-[100dvh] h-screen flex flex-col items-center justify-center overflow-hidden">
         <div className="hero-bg absolute inset-0 bg-mesh opacity-50 z-0"></div>
         <div className="relative z-10 text-center px-6 max-w-4xl mx-auto">
           <h1 className="text-display mb-8 text-transparent bg-clip-text bg-gradient-to-b from-white to-white/50">

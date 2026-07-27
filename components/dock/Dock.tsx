@@ -33,7 +33,7 @@ export default function Dock() {
         initial={{ y: 100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ type: "spring", stiffness: 200, damping: 20 }}
-        className="glass-panel pointer-events-auto flex items-center gap-2 px-4 py-3 rounded-2xl"
+        className="glass-panel pointer-events-auto flex items-center gap-1 md:gap-2 px-2 md:px-4 py-3 rounded-2xl"
       >
         {navItems.map((item) => {
           const isActive = pathname === item.href;
@@ -47,7 +47,7 @@ export default function Dock() {
                 transition={{ type: "spring", stiffness: 400, damping: 25 }}
                 className={twMerge(
                   clsx(
-                    "flex flex-col items-center justify-center w-12 h-12 rounded-xl transition-colors duration-300",
+                    "flex flex-col items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-xl transition-colors duration-300",
                     isActive
                       ? "bg-white/10 text-white"
                       : "text-white/60 hover:text-white hover:bg-white/5",

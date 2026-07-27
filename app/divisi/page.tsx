@@ -20,12 +20,12 @@ export default function DivisiPage() {
         </p>
       </div>
 
-        <div className="relative h-[600px] max-w-6xl mx-auto">
+        <div className="relative min-h-[600px] max-w-6xl mx-auto pb-8">
           {/* Programming Window */}
           <DraggableWindow
             title="Programming"
-            initialX={Math.max(0, (w - 800) / 2)}
-            initialY={50}
+            initialX={Math.max(0, Math.min(20, (w - 800) / 2))}
+            initialY={20}
             className="w-full max-w-[400px] min-h-[450px]"
             isFocused={focusedWindow === "programming"}
             onFocus={() => setFocusedWindow("programming")}
@@ -68,7 +68,7 @@ export default function DivisiPage() {
           {/* Desain Grafis Window */}
           <DraggableWindow
             title="Desain Grafis"
-            initialX={Math.min(w - 420, (w - 400) / 2 + 100)}
+            initialX={Math.max(0, Math.min(w - 420, (w - 400) / 2 + 100))}
             initialY={100}
             className="w-full max-w-[400px] min-h-[450px]"
             isFocused={focusedWindow === "desain"}

@@ -89,14 +89,14 @@ export default function ProjectPage() {
                   style={{ x: pos.x, y: pos.y }}
                   onPointerDown={(e) => e.stopPropagation()}
                 >
-                  <div className="w-[340px] glass-panel rounded-2xl overflow-hidden transition-transform hover:scale-105 hover:shadow-[0_10px_40px_rgba(245,158,11,0.15)] hover:border-white/20">
+                  <div className="w-[280px] sm:w-[320px] md:w-[340px] max-w-[90vw] glass-panel rounded-2xl overflow-hidden transition-transform md:hover:scale-105 md:hover:shadow-[0_10px_40px_rgba(245,158,11,0.15)] md:hover:border-white/20">
                     {/* Thumbnail */}
                     <div className="w-full h-44 bg-gradient-to-br from-white/5 to-transparent relative flex items-center justify-center overflow-hidden">
                       {project.image_url ? (
                         <img
                           src={project.image_url}
                           alt={project.title}
-                          className="w-full h-full object-cover transition-transform group-hover:scale-110 duration-500"
+                          className="w-full h-full object-cover transition-transform md:group-hover:scale-110 duration-500"
                         />
                       ) : (
                         <div className="flex flex-col items-center gap-2 text-white/15">

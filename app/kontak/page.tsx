@@ -105,7 +105,7 @@ export default function KontakPage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ type: "spring", stiffness: 300, damping: 25 }}
-        className="w-full max-w-3xl glass-panel rounded-2xl overflow-hidden flex flex-col h-[60vh] min-h-[400px] border border-white/10 shadow-2xl"
+        className="w-full max-w-3xl glass-panel rounded-2xl overflow-hidden flex flex-col h-[50vh] md:h-[60vh] min-h-[350px] md:min-h-[400px] border border-white/10 shadow-2xl"
         onClick={() => inputRef.current?.focus()}
       >
         {/* Terminal Header */}

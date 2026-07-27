@@ -190,8 +190,8 @@ export default function AdminDashboardPage() {
 
   return (
     <div className="min-h-screen w-full bg-[#0a0a0f] text-white overflow-hidden flex flex-col md:flex-row font-sans selection:bg-[var(--color-brand-amber)] selection:text-[#0a0a0f]">
-      {/* Background Effects */}
-      <div className="fixed inset-0 pointer-events-none z-0">
+      {/* Background Effects — lighter on mobile for GPU performance */}
+      <div className="fixed inset-0 pointer-events-none z-0 hidden md:block">
         <div className="absolute top-0 left-0 w-full h-[500px] bg-[var(--color-brand-amber)]/5 blur-[150px] opacity-50 rounded-full mix-blend-screen" />
         <div className="absolute bottom-[-20%] right-[-10%] w-[800px] h-[800px] bg-blue-600/5 blur-[120px] rounded-full mix-blend-screen" />
         <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 brightness-100 contrast-150 mix-blend-overlay"></div>
@@ -352,14 +352,14 @@ export default function AdminDashboardPage() {
                             href={task.linkUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="w-8 h-8 flex items-center justify-center rounded-full bg-white/10 hover:bg-blue-500 hover:text-white text-white/70 transition-colors"
+                            className="min-w-[40px] min-h-[40px] w-8 h-8 md:w-8 md:h-8 flex items-center justify-center rounded-full bg-white/10 hover:bg-blue-500 hover:text-white text-white/70 transition-colors"
                             title="Inspect URL"
                           >
                             <LinkIcon size={14} />
                           </a>
                           <button
                             onClick={() => handleDeleteTask(task.id)}
-                            className="w-8 h-8 flex items-center justify-center rounded-full bg-white/10 hover:bg-red-500 hover:text-white text-white/70 transition-colors"
+                            className="min-w-[40px] min-h-[40px] w-8 h-8 md:w-8 md:h-8 flex items-center justify-center rounded-full bg-white/10 hover:bg-red-500 hover:text-white text-white/70 transition-colors"
                             title="Purge Data"
                           >
                             <Trash2 size={14} />
@@ -563,7 +563,7 @@ export default function AdminDashboardPage() {
                                   <LinkIcon size={14} />
                                 </a>
                               )}
-                              <button onClick={() => handleDeleteProject(project.id)} className="w-8 h-8 flex items-center justify-center bg-white/20 hover:bg-red-500 hover:text-white rounded-full backdrop-blur-md transition-colors">
+                              <button onClick={() => handleDeleteProject(project.id)} className="min-w-[40px] min-h-[40px] w-8 h-8 md:w-8 md:h-8 flex items-center justify-center bg-white/20 hover:bg-red-500 hover:text-white rounded-full backdrop-blur-md transition-colors">
                                 <Trash2 size={14} />
                               </button>
                             </div>

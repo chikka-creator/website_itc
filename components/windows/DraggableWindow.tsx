@@ -28,6 +28,11 @@ export default function DraggableWindow({
   const containerRef = useRef<HTMLDivElement>(null);
   const dragControls = useDragControls();
   const [isDragging, setIsDragging] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    setIsMobile(window.innerWidth < 768);
+  }, []);
 
   // Motion values to track drag position
   const x = useMotionValue(initialX);
@@ -48,11 +53,9 @@ export default function DraggableWindow({
   const smoothVelocityY = useSpring(yVelocity, { damping: 30, stiffness: 120, mass: 0.8 });
 
   // Map velocity to 3D rotation (tilt) and 2D rotation (skew)
-  // Narrow the velocity range ([-800, 800]) and increase the degree limits ([-25, 25])
-  // so the tilt is much more visible even on slower drags.
+  // Disabled on mobile for performance (3D transforms are GPU-heavy on phones)
   const rotateY = useTransform(smoothVelocityX, [-800, 0, 800], [-25, 0, 25]);
   const rotateX = useTransform(smoothVelocityY, [-800, 0, 800], [25, 0, -25]);
-  // Slightly increase the twist
   const rotateZ = useTransform(smoothVelocityX, [-800, 0, 800], [-5, 0, 5]);
 
   return (
@@ -60,7 +63,7 @@ export default function DraggableWindow({
       ref={containerRef}
       drag
       dragControls={dragControls}
-      dragListener={false} // Only drag from handle
+      dragListener={false}
       dragMomentum={true}
       dragElastic={0.1}
       onDragStart={() => {
@@ -70,20 +73,20 @@ export default function DraggableWindow({
       onDragEnd={() => setIsDragging(false)}
       onPointerDown={onFocus}
       initial={{ scale: 0.9, opacity: 0 }}
-      animate={{ 
-        scale: isFocused ? 1.02 : 1, 
-        opacity: isFocused ? 1 : 0.85,
-        filter: isFocused ? "blur(0px)" : "blur(2px)",
+      animate={{
+        scale: isFocused ? 1.02 : 1,
+        opacity: isFocused ? 1 : (isMobile ? 1 : 0.85),
+        filter: isFocused ? "blur(0px)" : (isMobile ? "blur(0px)" : "blur(2px)"),
         zIndex: isFocused ? 40 : 10
       }}
       transition={{ type: "spring", stiffness: 300, damping: 25 }}
-      style={{ 
-        x, 
+      style={{
+        x,
         y,
-        rotateX,
-        rotateY,
-        rotateZ,
-        perspective: 1200,
+        rotateX: isMobile ? 0 : rotateX,
+        rotateY: isMobile ? 0 : rotateY,
+        rotateZ: isMobile ? 0 : rotateZ,
+        perspective: isMobile ? "none" : 1200,
         transformOrigin: "center center"
       }}
       className={twMerge(
