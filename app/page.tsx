@@ -59,8 +59,8 @@ export default function Home() {
 
   return (
     <div className="relative min-h-screen w-full overflow-hidden bg-mesh">
-      {/* Hero Content (Centered) */}
-      <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-0 p-6 text-center">
+      {/* Hero Content (Centered) — hidden on mobile, shown on desktop */}
+      <div className="hidden md:flex absolute inset-0 flex-col items-center justify-center pointer-events-none z-0 p-6 text-center">
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -81,12 +81,34 @@ export default function Home() {
         </motion.p>
       </div>
 
-      {/* MOBILE: Static cards in grid */}
+      {/* MOBILE: Static cards below hero text */}
       {isMobile ? (
-        <div className="relative z-10 px-6 pt-[45vh] pb-40 grid grid-cols-1 gap-4">
-          {cards.map((card, i) => (
-            <MobileCard key={card.id} card={card} index={i} />
-          ))}
+        <div className="relative z-10 min-h-screen flex flex-col">
+          {/* Hero text — not absolute, sits at top */}
+          <div className="flex flex-col items-center justify-center text-center p-6 pt-32 pb-16">
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              className="text-display mb-6 tracking-tight text-transparent bg-clip-text bg-gradient-to-br from-white to-white/60"
+            >
+              Welcome to <br /> <span className="text-[3874FF]">ITClub</span>
+            </motion.h1>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+              className="text-h2 text-white/70 max-w-sm font-normal"
+            >
+              Ekstrakurikuler teknologi SMKN 1 Surabaya. Eksplorasi kreativitas melalui kode dan desain.
+            </motion.p>
+          </div>
+          {/* Cards */}
+          <div className="px-6 pb-40 flex flex-col gap-4">
+            {cards.map((card, i) => (
+              <MobileCard key={card.id} card={card} index={i} />
+            ))}
+          </div>
         </div>
       ) : (
         /* DESKTOP: Draggable floating windows */
