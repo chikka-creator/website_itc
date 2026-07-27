@@ -91,8 +91,8 @@ export default function InfiniteCanvas({ children }: InfiniteCanvasProps) {
         {children}
       </motion.div>
 
-      {/* Zoom Controls Overlay */}
-      <div className="absolute top-24 right-6 glass-panel flex flex-col gap-2 p-2 rounded-xl pointer-events-auto">
+      {/* Zoom Controls Overlay — bottom-right on mobile to avoid title overlap */}
+      <div className={`${isMobile ? "absolute bottom-48 right-4" : "absolute top-24 right-6"} glass-panel flex flex-col gap-2 p-2 rounded-xl pointer-events-auto z-50`}>
         <button
           onClick={() => setScale(s => Math.min(s + 0.1, 2))}
           className="w-12 h-12 rounded-lg flex items-center justify-center bg-white/5 hover:bg-white/10 text-white transition-colors"
@@ -107,7 +107,7 @@ export default function InfiniteCanvas({ children }: InfiniteCanvasProps) {
         </button>
       </div>
 
-      <div className="absolute bottom-32 left-1/2 -translate-x-1/2 px-4 py-2 glass-panel rounded-full text-xs text-white/50 pointer-events-none">
+      <div className="absolute bottom-20 md:bottom-32 left-1/2 -translate-x-1/2 px-4 py-2 glass-panel rounded-full text-xs text-white/50 pointer-events-none z-50">
         {isMobile ? "Geser untuk navigasi, cubit untuk zoom" : "Drag untuk memindahkan kanvas, Ctrl+Scroll untuk zoom"}
       </div>
     </div>
