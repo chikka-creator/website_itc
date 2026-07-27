@@ -65,7 +65,7 @@ export default function Home() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="text-display mb-6 tracking-tight text-transparent bg-clip-text bg-gradient-to-br from-white to-white/60"
+          className="text-display mb-6 tracking-tight text-white"
         >
           Welcome to <br /> <span className="text-[var(--color-brand-amber)]">ITClub</span>
         </motion.h1>
@@ -74,7 +74,7 @@ export default function Home() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-          className="text-h2 text-white/70 max-w-2xl font-normal"
+          className="text-h2 text-white max-w-2xl font-normal"
         >
           Ekstrakurikuler teknologi SMKN 1 Surabaya. <br />
           Eksplorasi kreativitas melalui kode dan desain.
@@ -90,7 +90,7 @@ export default function Home() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="text-display mb-6 tracking-tight text-transparent bg-clip-text bg-gradient-to-br from-white to-white/60"
+              className="text-display mb-6 tracking-tight text-white"
             >
               Welcome to <br /> <span className="text-[var(--color-brand-amber)]">ITClub</span>
             </motion.h1>
