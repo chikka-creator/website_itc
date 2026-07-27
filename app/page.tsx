@@ -7,17 +7,61 @@ import { useState } from "react";
 import { ArrowRight, Code, Palette, Rocket } from "lucide-react";
 import Link from "next/link";
 
+// Card content data (reused for mobile cards and desktop windows)
+const cards = [
+  {
+    id: "programming",
+    title: "Divisi Programming",
+    icon: Code,
+    description: "Logika, struktur, dan algoritma. Membangun fondasi sistem dari baris kode.",
+  },
+  {
+    id: "desain",
+    title: "Divisi Desain Grafis",
+    icon: Palette,
+    description: "Estetika, komposisi, dan visual. Menyampaikan pesan melalui karya seni digital.",
+  },
+  {
+    id: "project",
+    title: "Project Terbaru",
+    icon: Rocket,
+    description: "Lihat karya inovatif dari member ITClub.",
+  },
+];
+
+// Mobile card component (static, no drag)
+function MobileCard({ card, index }: { card: typeof cards[0]; index: number }) {
+  const Icon = card.icon;
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: 0.2 + index * 0.1, ease: [0.16, 1, 0.3, 1] }}
+      className="glass-panel rounded-2xl p-6 flex flex-col gap-4"
+    >
+      <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center">
+        <Icon className="text-[var(--color-brand-amber)]" />
+      </div>
+      <div>
+        <h3 className="text-lg font-bold text-white mb-1">{card.title}</h3>
+        <p className="text-sm text-white/70 leading-relaxed">{card.description}</p>
+      </div>
+    </motion.div>
+  );
+}
+
 export default function Home() {
   const [focusedWindow, setFocusedWindow] = useState<string>("hero");
 
   const w = typeof window !== "undefined" ? window.innerWidth : 1024;
   const h = typeof window !== "undefined" ? window.innerHeight : 768;
+  const isMobile = w < 768;
 
   return (
     <div className="relative min-h-screen w-full overflow-hidden bg-mesh">
       {/* Hero Content (Centered) */}
       <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-0 p-6 text-center">
-        <motion.h1 
+        <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
@@ -25,7 +69,7 @@ export default function Home() {
         >
           Welcome to <br /> <span className="text-[3874FF]">ITClub</span>
         </motion.h1>
-        
+
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -37,8 +81,16 @@ export default function Home() {
         </motion.p>
       </div>
 
+      {/* MOBILE: Static cards in grid */}
+      {isMobile ? (
+        <div className="relative z-10 px-6 pt-[45vh] pb-40 grid grid-cols-1 gap-4">
+          {cards.map((card, i) => (
+            <MobileCard key={card.id} card={card} index={i} />
+          ))}
+        </div>
+      ) : (
+        /* DESKTOP: Draggable floating windows */
         <>
-          {/* Floating Object 1: Divisi Programming */}
           <DraggableWindow
             title="Divisi Programming"
             initialX={Math.max(16, Math.min(w - 290, w * 0.1))}
@@ -55,7 +107,6 @@ export default function Home() {
             </div>
           </DraggableWindow>
 
-          {/* Floating Object 2: Divisi Desain Grafis */}
           <DraggableWindow
             title="Divisi Desain Grafis"
             initialX={Math.max(16, Math.min(w - 290, w * 0.7))}
@@ -72,7 +123,6 @@ export default function Home() {
             </div>
           </DraggableWindow>
 
-          {/* Floating Object 3: Project Terbaru */}
           <DraggableWindow
             title="Project Terbaru"
             initialX={Math.max(16, Math.min(w - 330, w * 0.2))}
@@ -89,6 +139,7 @@ export default function Home() {
             </div>
           </DraggableWindow>
         </>
+      )}
 
       {/* Floating Object 4: Gabung ITClub CTA */}
       <div className="absolute right-8 bottom-32 md:right-16 md:bottom-24 z-50">
