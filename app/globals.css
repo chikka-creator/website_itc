@@ -55,6 +55,19 @@ input, textarea, [contenteditable="true"] {
   user-select: text;
 }
 
+/* Prevent image selection and native drag */
+img, svg, video, canvas {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-drag: none;
+}
+
 /* Glassmorphism Utilities */
 .glass-panel {
   background: rgba(255, 255, 255, 0.03);
