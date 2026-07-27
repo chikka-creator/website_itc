@@ -115,8 +115,8 @@ export default function Home() {
         <>
           <DraggableWindow
             title="Divisi Programming"
-            initialX={Math.max(16, Math.min(w - 290, w * 0.1))}
-            initialY={Math.max(100, h * 0.15)}
+            initialX={Math.max(20, w * 0.02)}
+            initialY={Math.max(80, h * 0.08)}
             className="w-[280px] max-w-[90vw] h-[200px]"
             isFocused={focusedWindow === "programming"}
             onFocus={() => setFocusedWindow("programming")}
@@ -131,8 +131,8 @@ export default function Home() {
 
           <DraggableWindow
             title="Divisi Desain Grafis"
-            initialX={Math.max(16, Math.min(w - 290, w * 0.7))}
-            initialY={Math.max(150, h * 0.2)}
+            initialX={Math.max(20, w - 300)}
+            initialY={Math.max(80, h * 0.08)}
             className="w-[280px] max-w-[90vw] h-[200px]"
             isFocused={focusedWindow === "desain"}
             onFocus={() => setFocusedWindow("desain")}
@@ -147,8 +147,8 @@ export default function Home() {
 
           <DraggableWindow
             title="Project Terbaru"
-            initialX={Math.max(16, Math.min(w - 330, w * 0.2))}
-            initialY={Math.min(h - 250, h * 0.6)}
+            initialX={Math.max(20, w * 0.02)}
+            initialY={Math.max(20, h - 260)}
             className="w-[320px] max-w-[90vw] h-[160px]"
             isFocused={focusedWindow === "project"}
             onFocus={() => setFocusedWindow("project")}
