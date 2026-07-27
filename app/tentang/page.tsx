@@ -4,7 +4,7 @@ import { useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
-import { Users, GraduationCap, Monitor, ArrowDown, Code2, Palette, Send, Rocket } from "lucide-react";
+import { Users, GraduationCap, Monitor, ArrowDown } from "lucide-react";
 import TimelineItem from "@/components/shared/TimelineItem";
 import FloatingLogo from "@/components/shared/FloatingLogo";
 
@@ -69,35 +69,35 @@ export default function TentangPage() {
 
         {/* Floating 3D Logos — scattered around hero */}
         <FloatingLogo
-          icon={<Code2 size={28} strokeWidth={1.5} />}
+          src="/vscode.png"
           label="VS Code"
           initialX={-180}
           initialY={-120}
-          size="md"
+          size={80}
           delay={0}
         />
         <FloatingLogo
-          icon={<Palette size={28} strokeWidth={1.5} />}
+          src="/figma.png"
           label="Figma"
           initialX={160}
           initialY={-100}
-          size="md"
+          size={80}
           delay={1}
         />
         <FloatingLogo
-          icon={<Send size={26} strokeWidth={1.5} />}
+          src="/postman.png"
           label="Postman"
           initialX={-150}
           initialY={100}
-          size="sm"
+          size={72}
           delay={2}
         />
         <FloatingLogo
-          icon={<Rocket size={26} strokeWidth={1.5} />}
+          src="/antigravity.png"
           label="Antigravity"
           initialX={170}
           initialY={110}
-          size="sm"
+          size={72}
           delay={3}
         />
 
