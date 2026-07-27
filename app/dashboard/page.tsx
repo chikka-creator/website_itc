@@ -125,7 +125,7 @@ export default function DashboardPage() {
           <MagneticButton>
             <button 
               onClick={() => signOut({ callbackUrl: '/' })}
-              className="flex items-center gap-2 px-6 py-3 rounded-full bg-red-500/10 border border-red-500/30 text-red-400 hover:bg-red-500/20 transition-colors"
+              className="flex items-center gap-2 px-6 py-3 rounded-full bg-[var(--color-brand-navy-900)]/10 border border-[var(--color-brand-navy-900)]/30 text-[var(--color-brand-navy-900)] hover:bg-[var(--color-brand-navy-900)]/20 transition-colors"
             >
               <LogOut size={18} />
               <span>Keluar</span>
@@ -151,7 +151,7 @@ export default function DashboardPage() {
               </div>
 
               {message && (
-                <div className={`mb-6 p-4 rounded-lg text-sm ${message.includes('berhasil') ? 'bg-green-500/10 border border-green-500/20 text-green-400' : 'bg-red-500/10 border border-red-500/20 text-red-400'}`}>
+                <div className={`mb-6 p-4 rounded-lg text-sm ${message.includes('berhasil') ? 'bg-[var(--color-brand-amber)]/10 border border-[var(--color-brand-amber)]/20 text-[var(--color-brand-amber)]' : 'bg-[var(--color-brand-navy-900)]/10 border border-[var(--color-brand-navy-900)]/20 text-[var(--color-brand-navy-900)]'}`}>
                   {message}
                 </div>
               )}
@@ -215,8 +215,8 @@ export default function DashboardPage() {
           >
             <div className="glass-panel p-6 md:p-8 rounded-2xl min-h-[600px]">
               <div className="flex items-center gap-3 mb-8 pb-6 border-b border-white/10">
-                <div className="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center">
-                  <FileText className="text-blue-400" />
+                <div className="w-10 h-10 rounded-full bg-[var(--color-brand-slate)]/20 flex items-center justify-center">
+                  <FileText className="text-[var(--color-brand-slate)]" />
                 </div>
                 <h2 className="text-xl font-bold text-white">
                   {role === "ADMIN" ? "Semua Tugas Member" : "Histori Tugas Anda"}

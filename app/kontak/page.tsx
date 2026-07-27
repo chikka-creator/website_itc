@@ -84,7 +84,7 @@ export default function KontakPage() {
         response = null;
         break;
       default:
-        response = <p className="text-red-400 ml-4">Perintah &apos;{trimmed}&apos; tidak ditemukan. Ketik &apos;help&apos; untuk daftar perintah.</p>;
+        response = <p className="text-[var(--color-brand-navy-900)] ml-4">Perintah &apos;{trimmed}&apos; tidak ditemukan. Ketik &apos;help&apos; untuk daftar perintah.</p>;
     }
 
     setHistory((prev) => [
@@ -111,9 +111,9 @@ export default function KontakPage() {
         {/* Terminal Header */}
         <div className="flex items-center gap-3 px-4 py-3 border-b border-white/10 bg-white/5">
           <div className="flex gap-1.5">
-            <div className="w-3 h-3 rounded-full bg-red-500/80" />
+            <div className="w-3 h-3 rounded-full bg-[var(--color-brand-navy-900)]" />
             <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
-            <div className="w-3 h-3 rounded-full bg-green-500/80" />
+            <div className="w-3 h-3 rounded-full bg-[var(--color-brand-amber)]" />
           </div>
           <div className="flex items-center gap-2 mx-auto text-white/50 text-sm font-mono">
             <TerminalIcon size={14} />
@@ -130,7 +130,7 @@ export default function KontakPage() {
             <div key={log.id} className="space-y-2">
               {log.input !== undefined && (
                 <div className="flex gap-2 text-white">
-                  <span className="text-green-400">guest@itclub:~$</span>
+                  <span className="text-[var(--color-brand-amber)]">guest@itclub:~$</span>
                   <span>{log.input}</span>
                 </div>
               )}
@@ -140,7 +140,7 @@ export default function KontakPage() {
 
           {/* Current Input */}
           <form onSubmit={handleSubmit} className="flex gap-2 text-white items-center">
-            <span className="text-green-400">guest@itclub:~$</span>
+            <span className="text-[var(--color-brand-amber)]">guest@itclub:~$</span>
             <input
               ref={inputRef}
               type="text"

@@ -67,7 +67,7 @@ export default function Home() {
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           className="text-display mb-6 tracking-tight text-transparent bg-clip-text bg-gradient-to-br from-white to-white/60"
         >
-          Welcome to <br /> <span className="text-[3874FF]">ITClub</span>
+          Welcome to <br /> <span className="text-[var(--color-brand-amber)]">ITClub</span>
         </motion.h1>
 
         <motion.p
@@ -92,7 +92,7 @@ export default function Home() {
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
               className="text-display mb-6 tracking-tight text-transparent bg-clip-text bg-gradient-to-br from-white to-white/60"
             >
-              Welcome to <br /> <span className="text-[3874FF]">ITClub</span>
+              Welcome to <br /> <span className="text-[var(--color-brand-amber)]">ITClub</span>
             </motion.h1>
             <motion.p
               initial={{ opacity: 0, y: 20 }}

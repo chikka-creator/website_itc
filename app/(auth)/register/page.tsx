@@ -70,13 +70,13 @@ export default function RegisterPage() {
         <p className="text-body text-white/60 mb-8">Bergabunglah dan mulai petualangan digitalmu.</p>
 
         {error && (
-          <div className="mb-6 p-4 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
+          <div className="mb-6 p-4 rounded-lg bg-[var(--color-brand-navy-900)]/10 border border-[var(--color-brand-navy-900)]/20 text-[var(--color-brand-navy-900)] text-sm">
             {error}
           </div>
         )}
 
         {success && (
-          <div className="mb-6 p-4 rounded-lg bg-green-500/10 border border-green-500/20 text-green-400 text-sm">
+          <div className="mb-6 p-4 rounded-lg bg-[var(--color-brand-amber)]/10 border border-[var(--color-brand-amber)]/20 text-[var(--color-brand-amber)] text-sm">
             {success}
           </div>
         )}

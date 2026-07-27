@@ -91,18 +91,18 @@ export default function TentangPage() {
         >
           <div className="w-28 h-28 sm:w-36 sm:h-36 md:w-44 md:h-44 rounded-lg p-2.5 sm:p-3 md:p-4 flex flex-col justify-between"
             style={{
-              background: "linear-gradient(135deg, #fef3c7, #fde68a)",
+              background: "linear-gradient(135deg, rgba(240,215,140,0.3), rgba(240,215,140,0.15))",
               boxShadow: "0 8px 24px rgba(245,158,11,0.2), inset 0 -2px 4px rgba(0,0,0,0.05)",
             }}
           >
-            <p className="text-[9px] sm:text-[10px] md:text-xs font-medium leading-relaxed" style={{ color: "#92400e" }}>
+            <p className="text-[9px] sm:text-[10px] md:text-xs font-medium leading-relaxed" style={{ color: "var(--color-brand-navy-900)" }}>
               Catatan: Topik bulan ini — React, UI/UX, dan API integration 🚀
             </p>
             <div className="flex items-center gap-1.5 mt-auto">
-              <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-blue-500 flex items-center justify-center">
+              <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-[var(--color-brand-slate)] flex items-center justify-center">
                 <Check size={10} className="text-white" />
               </div>
-              <span className="text-[8px] sm:text-[9px] md:text-[10px] font-semibold" style={{ color: "#a16207" }}>3 tugas selesai</span>
+              <span className="text-[8px] sm:text-[9px] md:text-[10px] font-semibold" style={{ color: "var(--color-brand-navy-800)" }}>3 tugas selesai</span>
             </div>
           </div>
         </FloatingCard>
@@ -115,8 +115,8 @@ export default function TentangPage() {
         >
           <div className="w-36 sm:w-40 md:w-48 rounded-xl p-2.5 sm:p-3 md:p-4 glass-panel border border-white/10">
             <div className="flex items-center gap-2 mb-2 sm:mb-3">
-              <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-md bg-blue-500/20 flex items-center justify-center">
-                <BookOpen size={10} className="text-blue-400" />
+              <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-md bg-[var(--color-brand-slate)]/20 flex items-center justify-center">
+                <BookOpen size={10} className="text-[var(--color-brand-slate)]" />
               </div>
               <span className="text-[9px] sm:text-[10px] md:text-xs font-bold text-white/80">Today&apos;s tasks</span>
             </div>
@@ -124,7 +124,7 @@ export default function TentangPage() {
               {["Buat UI Landing Page", "Setup Database API", "Review Code PR"].map((task, i) => (
                 <div key={i} className="flex items-center gap-1.5 sm:gap-2">
                   <div className={`w-3 h-3 sm:w-3.5 sm:h-3.5 md:w-4 md:h-4 rounded-sm border flex items-center justify-center ${
-                    i < 2 ? "bg-green-500 border-green-500" : "border-white/20"
+                    i < 2 ? "bg-[var(--color-brand-amber)] border-[var(--color-brand-amber)]" : "border-white/20"
                   }`}>
                     {i < 2 && <Check size={8} className="text-white" />}
                   </div>
@@ -159,8 +159,8 @@ export default function TentangPage() {
               <div className="bg-white/5 rounded-lg p-2 sm:p-2.5 border border-white/5">
                 <span className="text-[8px] sm:text-[9px] md:text-[10px] font-semibold text-white/60">Deadline Project</span>
                 <div className="flex items-center gap-1.5 mt-1">
-                  <Zap size={8} className="text-red-400" />
-                  <span className="text-[8px] sm:text-[9px] md:text-[10px] text-red-400">Besok</span>
+                  <Zap size={8} className="text-[var(--color-brand-navy-900)]" />
+                  <span className="text-[8px] sm:text-[9px] md:text-[10px] text-[var(--color-brand-navy-900)]">Besok</span>
                 </div>
               </div>
             </div>
@@ -194,7 +194,7 @@ export default function TentangPage() {
           <div className="w-32 sm:w-36 md:w-44 rounded-xl p-2.5 sm:p-3 md:p-4 glass-panel border border-white/10">
             <span className="text-[8px] sm:text-[9px] md:text-[10px] font-bold text-white/50 uppercase tracking-wider">100+ Integrations</span>
             <div className="flex gap-1 sm:1.5 md:gap-2 mt-2 sm:mt-2.5 md:mt-3">
-              {["bg-red-500", "bg-blue-500", "bg-purple-500", "bg-green-500"].map((color, i) => (
+              {["bg-[var(--color-brand-navy-900)]", "bg-[var(--color-brand-slate)]", "bg-[var(--color-brand-amber)]", "bg-[var(--color-brand-navy-800)]"].map((color, i) => (
                 <div key={i} className={`w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8 rounded-lg ${color} flex items-center justify-center shadow-lg`}>
                   <Zap size={9} className="text-white" />
                 </div>

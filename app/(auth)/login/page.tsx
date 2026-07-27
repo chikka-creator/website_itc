@@ -53,7 +53,7 @@ export default function LoginPage() {
         <p className="text-body text-white/60 mb-8">Login untuk melanjutkan ke workspace Anda.</p>
 
         {error && (
-          <div className="mb-6 p-4 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
+          <div className="mb-6 p-4 rounded-lg bg-[var(--color-brand-navy-900)]/10 border border-[var(--color-brand-navy-900)]/20 text-[var(--color-brand-navy-900)] text-sm">
             {error}
           </div>
         )}
