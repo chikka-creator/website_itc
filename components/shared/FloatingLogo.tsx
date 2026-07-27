@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useMotionValue, useTransform, useVelocity, useSpring, useAnimationFrame } from "framer-motion";
+import { motion, useMotionValue, useTransform, useVelocity, useSpring } from "framer-motion";
 import Image from "next/image";
 import { useState, useRef } from "react";
 
@@ -57,13 +57,11 @@ export default function FloatingLogo({
       onHoverStart={() => setIsHovered(true)}
       onHoverEnd={() => setIsHovered(false)}
       // Entrance animation — scale from 0, fade in, slight 3D rotate
-      initial={{ scale: 0, opacity: 0, rotateY: -40 }}
+      initial={{ scale: 0, opacity: 0 }}
       animate={{
         scale: isHovered ? 1.1 : 1,
         opacity: 1,
-        rotateY: 0,
         zIndex: isDragging ? 50 : 20,
-        filter: isDragging ? "blur(0px)" : "blur(0px)",
       }}
       transition={{
         type: "spring",
