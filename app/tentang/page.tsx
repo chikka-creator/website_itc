@@ -4,8 +4,9 @@ import { useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
-import { Users, GraduationCap, Monitor, ArrowDown } from "lucide-react";
+import { Users, GraduationCap, Monitor, ArrowDown, Code2, Palette, Send, Rocket } from "lucide-react";
 import TimelineItem from "@/components/shared/TimelineItem";
+import FloatingLogo from "@/components/shared/FloatingLogo";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -15,7 +16,7 @@ export default function TentangPage() {
   const containerRef = useRef<HTMLDivElement>(null);
   const timelineLineRef = useRef<HTMLDivElement>(null);
   const timelineProgressRef = useRef<HTMLDivElement>(null);
-  
+
   useGSAP(() => {
     // Parallax hero
     gsap.to(".hero-bg", {
@@ -65,6 +66,41 @@ export default function TentangPage() {
       {/* Hero Section */}
       <section className="hero-section relative min-h-[100dvh] h-screen flex flex-col items-center justify-center overflow-hidden">
         <div className="hero-bg absolute inset-0 bg-mesh opacity-50 z-0"></div>
+
+        {/* Floating 3D Logos — scattered around hero */}
+        <FloatingLogo
+          icon={<Code2 size={28} strokeWidth={1.5} />}
+          label="VS Code"
+          initialX={-180}
+          initialY={-120}
+          size="md"
+          delay={0}
+        />
+        <FloatingLogo
+          icon={<Palette size={28} strokeWidth={1.5} />}
+          label="Figma"
+          initialX={160}
+          initialY={-100}
+          size="md"
+          delay={1}
+        />
+        <FloatingLogo
+          icon={<Send size={26} strokeWidth={1.5} />}
+          label="Postman"
+          initialX={-150}
+          initialY={100}
+          size="sm"
+          delay={2}
+        />
+        <FloatingLogo
+          icon={<Rocket size={26} strokeWidth={1.5} />}
+          label="Antigravity"
+          initialX={170}
+          initialY={110}
+          size="sm"
+          delay={3}
+        />
+
         <div className="relative z-10 text-center px-6 max-w-4xl mx-auto">
           <h1 className="text-display mb-8 text-transparent bg-clip-text bg-gradient-to-b from-white to-white/50">
             Cerita Kami
@@ -72,7 +108,11 @@ export default function TentangPage() {
           <p className="text-h2 text-white/80 font-normal leading-relaxed">
             Lebih dari sekadar ekstrakurikuler. Kami adalah ruang untuk berkarya, berinovasi, dan belajar bersama di SMKN 1 Surabaya.
           </p>
+          <p className="mt-6 text-sm text-white/30 font-mono">
+            ↓ Geser logo di sekitar untuk berinteraksi
+          </p>
         </div>
+
         <div className="absolute bottom-32 animate-bounce text-white/30">
           <ArrowDown size={32} />
         </div>
