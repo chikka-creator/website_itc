@@ -96,13 +96,13 @@ export default function DivisiPage() {
 
       {/* MOBILE: Static stacked cards */}
       {isMobile ? (
-        <div className="max-w-md mx-auto flex flex-col gap-4 pb-16">
+        <div className="max-w-md mx-auto flex flex-col gap-4 pb-40">
           <MobileDivisiCard type="programming" index={0} />
           <MobileDivisiCard type="desain" index={1} />
         </div>
       ) : (
         /* DESKTOP: Draggable windows */
-        <div className="relative min-h-[600px] max-w-6xl mx-auto pb-8">
+        <div className="relative min-h-[600px] max-w-6xl mx-auto pb-40">
           <DraggableWindow
             title="Programming"
             initialX={Math.max(0, Math.min(20, (w - 800) / 2))}

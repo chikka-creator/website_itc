@@ -106,7 +106,7 @@ export default function DashboardPage() {
   const role = (session.user as any)?.role || "MEMBER";
 
   return (
-    <div className="min-h-screen w-full bg-mesh relative overflow-hidden py-24 px-6 md:px-12">
+    <div className="min-h-screen w-full bg-mesh relative overflow-hidden py-24 pb-40 px-6 md:px-12">
       <div className="absolute inset-0 pointer-events-none z-0" />
       
       <div className="max-w-6xl mx-auto relative z-10">

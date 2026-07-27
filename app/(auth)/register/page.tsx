@@ -53,7 +53,7 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center p-6 bg-mesh relative overflow-hidden">
+    <div className="min-h-screen w-full flex items-center justify-center p-6 pb-24 bg-mesh relative overflow-hidden">
       <div className="absolute inset-0 pointer-events-none z-0" />
       
       <motion.div 

@@ -300,7 +300,7 @@ export default function AdminDashboardPage() {
       </motion.aside>
 
       {/* RIGHT: MAIN DATA VIEW */}
-      <main className="relative z-10 flex-1 h-auto md:h-screen overflow-y-auto custom-scrollbar p-6 md:p-10">
+      <main className="relative z-10 flex-1 h-auto md:h-screen overflow-y-auto custom-scrollbar p-6 md:p-10 pb-40 md:pb-10">
         <AnimatePresence mode="wait">
           
           {/* TASKS VIEW */}

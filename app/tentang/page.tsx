@@ -76,7 +76,7 @@ export default function TentangPage() {
   const isMobile = w < 640;
 
   return (
-    <div ref={containerRef} className="min-h-screen bg-[var(--color-brand-navy-900)] pb-32">
+    <div ref={containerRef} className="min-h-screen bg-[var(--color-brand-navy-900)] pb-40">
       {/* Hero Section */}
       <section className="hero-section relative min-h-[100dvh] h-screen flex flex-col items-center justify-center overflow-hidden">
         <div className="hero-bg absolute inset-0 bg-mesh opacity-50 z-0"></div>
