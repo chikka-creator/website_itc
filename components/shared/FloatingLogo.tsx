@@ -1,7 +1,8 @@
 "use client";
 
-import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
+import { motion, useMotionValue, useTransform, useVelocity, useSpring, useAnimationFrame } from "framer-motion";
 import Image from "next/image";
+import { useState, useRef } from "react";
 
 interface FloatingLogoProps {
   src: string;
@@ -20,27 +21,54 @@ export default function FloatingLogo({
   size = 80,
   delay = 0,
 }: FloatingLogoProps) {
+  const [isDragging, setIsDragging] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Motion values for position
   const x = useMotionValue(initialX);
   const y = useMotionValue(initialY);
 
-  const xVelocity = useSpring(0, { stiffness: 100, damping: 20 });
-  const yVelocity = useSpring(0, { stiffness: 100, damping: 20 });
+  // Initialize position
+  // (Framer Motion handles initial position via style prop)
 
-  const rotateY = useTransform(xVelocity, [-500, 0, 500], [-20, 0, 20]);
-  const rotateX = useTransform(yVelocity, [-500, 0, 500], [20, 0, -20]);
+  // Track velocity for 3D tilt effect (same as DraggableWindow)
+  const xVelocity = useVelocity(x);
+  const yVelocity = useVelocity(y);
+
+  // Smooth the velocity for fluid animation
+  const smoothVelocityX = useSpring(xVelocity, { damping: 30, stiffness: 120, mass: 0.8 });
+  const smoothVelocityY = useSpring(yVelocity, { damping: 30, stiffness: 120, mass: 0.8 });
+
+  // Map velocity to 3D rotation — same mapping as DraggableWindow
+  const rotateY = useTransform(smoothVelocityX, [-800, 0, 800], [-25, 0, 25]);
+  const rotateX = useTransform(smoothVelocityY, [-800, 0, 800], [25, 0, -25]);
+  const rotateZ = useTransform(smoothVelocityX, [-800, 0, 800], [-5, 0, 5]);
 
   return (
     <motion.div
+      ref={containerRef}
       drag
       dragMomentum={true}
-      dragElastic={0.15}
+      dragElastic={0.1}
+      onDragStart={() => setIsDragging(true)}
+      onDragEnd={() => setIsDragging(false)}
       onPointerDown={(e) => e.stopPropagation()}
-      initial={{ scale: 0, opacity: 0, rotateY: -30 }}
-      animate={{ scale: 1, opacity: 1, rotateY: 0 }}
+      onHoverStart={() => setIsHovered(true)}
+      onHoverEnd={() => setIsHovered(false)}
+      // Entrance animation — scale from 0, fade in, slight 3D rotate
+      initial={{ scale: 0, opacity: 0, rotateY: -40 }}
+      animate={{
+        scale: isHovered ? 1.1 : 1,
+        opacity: 1,
+        rotateY: 0,
+        zIndex: isDragging ? 50 : 20,
+        filter: isDragging ? "blur(0px)" : "blur(0px)",
+      }}
       transition={{
         type: "spring",
-        stiffness: 180,
-        damping: 15,
+        stiffness: 200,
+        damping: 18,
         delay: 0.6 + delay * 0.18,
       }}
       style={{
@@ -48,47 +76,57 @@ export default function FloatingLogo({
         y,
         rotateX,
         rotateY,
-        perspective: 800,
-        transformStyle: "preserve-3d",
+        rotateZ,
+        perspective: 1200,
+        transformOrigin: "center center",
       }}
-      whileHover={{ scale: 1.12, rotateX: -5, rotateY: 10 }}
-      whileTap={{ scale: 0.95, cursor: "grabbing" }}
-      className="absolute z-20 cursor-grab active:cursor-grabbing"
+      className={`absolute z-20 cursor-grab active:cursor-grabbing ${isDragging ? "cursor-grabbing" : ""}`}
     >
-      {/* 3D card container */}
+      {/* 3D Card Container — glassmorphism like DraggableWindow */}
       <div
-        className="relative rounded-2xl overflow-hidden"
+        className={`relative rounded-2xl overflow-hidden transition-shadow duration-300 ${
+          isDragging
+            ? "shadow-[0_30px_60px_rgba(0,0,0,0.5),0_0_30px_rgba(245,158,11,0.15)]"
+            : "shadow-[0_8px_32px_rgba(0,0,0,0.3),0_2px_8px_rgba(245,158,11,0.1)]"
+        }`}
         style={{
           width: size + 32,
           height: size + 56,
-          background: "linear-gradient(145deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02))",
+          background: isDragging
+            ? "linear-gradient(145deg, rgba(255,255,255,0.12), rgba(255,255,255,0.04))"
+            : "linear-gradient(145deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02))",
           backdropFilter: "blur(20px)",
           WebkitBackdropFilter: "blur(20px)",
-          border: "1px solid rgba(255,255,255,0.12)",
-          boxShadow: `
-            0 8px 32px rgba(0,0,0,0.3),
-            0 2px 8px rgba(245,158,11,0.1),
-            inset 0 1px 0 rgba(255,255,255,0.1)
-          `,
+          border: isDragging
+            ? "1px solid rgba(245,158,11,0.25)"
+            : "1px solid rgba(255,255,255,0.12)",
+          boxShadow: isDragging
+            ? "0 30px 60px rgba(0,0,0,0.5), 0 0 30px rgba(245,158,11,0.15), inset 0 1px 0 rgba(255,255,255,0.15)"
+            : isHovered
+            ? "0 12px 40px rgba(0,0,0,0.4), 0 4px 12px rgba(245,158,11,0.12), inset 0 1px 0 rgba(255,255,255,0.1)"
+            : "0 8px 32px rgba(0,0,0,0.3), 0 2px 8px rgba(245,158,11,0.1), inset 0 1px 0 rgba(255,255,255,0.1)",
         }}
       >
-        {/* Glow effect on hover */}
-        <div className="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500 pointer-events-none rounded-2xl"
+        {/* Glow effect — intensifies on hover/drag */}
+        <div
+          className="absolute inset-0 pointer-events-none rounded-2xl transition-opacity duration-500"
           style={{
-            background: "radial-gradient(circle at 50% 50%, rgba(245,158,11,0.08), transparent 70%)",
+            opacity: isDragging ? 0.6 : isHovered ? 0.3 : 0,
+            background: "radial-gradient(circle at 50% 50%, rgba(245,158,11,0.15), transparent 70%)",
           }}
         />
 
         {/* Logo image */}
-        <div className="flex items-center justify-center" style={{ height: size + 24, padding: "16px" }}>
+        <div className="flex items-center justify-center relative" style={{ height: size + 24, padding: "16px" }}>
           <Image
             src={src}
             alt={label}
             width={size}
             height={size}
-            className="object-contain drop-shadow-[0_4px_12px_rgba(245,158,11,0.15)]"
+            className="object-contain"
             style={{
-              filter: "drop-shadow(0 2px 8px rgba(0,0,0,0.4))",
+              filter: `drop-shadow(0 ${isDragging ? "6" : "2"}px ${isDragging ? "16" : "8"}px rgba(0,0,0,${isDragging ? "0.6" : "0.4"}))`,
+              transition: "filter 0.3s ease",
             }}
           />
         </div>
