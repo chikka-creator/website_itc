@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useMotionValue, useVelocity, useSpring, useTransform } from "framer-motion";
-import { useState, ReactNode } from "react";
+import { useState, useEffect, ReactNode } from "react";
 
 interface FloatingCardProps {
   children: ReactNode;
@@ -22,6 +22,11 @@ export default function FloatingCard({
 }: FloatingCardProps) {
   const [isDragging, setIsDragging] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+  const [isMobile, setIsMobile] = useState(true);
+
+  useEffect(() => {
+    setIsMobile(window.innerWidth < 768);
+  }, []);
 
   const x = useMotionValue(initialX);
   const y = useMotionValue(initialY);
@@ -38,7 +43,7 @@ export default function FloatingCard({
 
   return (
     <motion.div
-      drag
+      drag={!isMobile}
       dragMomentum={true}
       dragElastic={0.1}
       onDragStart={() => setIsDragging(true)}
@@ -48,7 +53,7 @@ export default function FloatingCard({
       onHoverEnd={() => setIsHovered(false)}
       initial={{ scale: 0, opacity: 0, rotate: rotate - 15 }}
       animate={{
-        scale: isHovered ? 1.05 : 1,
+        scale: isHovered && !isMobile ? 1.05 : 1,
         opacity: 1,
         rotate: rotate,
         zIndex: isDragging ? 50 : 10,
@@ -62,13 +67,13 @@ export default function FloatingCard({
       style={{
         x,
         y,
-        rotateX,
-        rotateY,
-        rotateZ,
-        perspective: 1000,
+        rotateX: isMobile ? 0 : rotateX,
+        rotateY: isMobile ? 0 : rotateY,
+        rotateZ: isMobile ? 0 : rotateZ,
+        perspective: isMobile ? "none" : 1000,
         transformOrigin: "center center",
       }}
-      className={`absolute z-10 cursor-grab active:cursor-grabbing ${className}`}
+      className={`absolute z-10 ${isMobile ? "" : "cursor-grab active:cursor-grabbing"} ${className}`}
     >
       <div
         className={`transition-shadow duration-300 ${

@@ -2,7 +2,7 @@
 
 import { motion, useMotionValue, useTransform, useVelocity, useSpring } from "framer-motion";
 import Image from "next/image";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 
 interface FloatingLogoProps {
   src: string;
@@ -23,24 +23,22 @@ export default function FloatingLogo({
 }: FloatingLogoProps) {
   const [isDragging, setIsDragging] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+  const [isMobile, setIsMobile] = useState(true);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Motion values for position
+  useEffect(() => {
+    setIsMobile(window.innerWidth < 768);
+  }, []);
+
   const x = useMotionValue(initialX);
   const y = useMotionValue(initialY);
 
-  // Initialize position
-  // (Framer Motion handles initial position via style prop)
-
-  // Track velocity for 3D tilt effect (same as DraggableWindow)
   const xVelocity = useVelocity(x);
   const yVelocity = useVelocity(y);
 
-  // Smooth the velocity for fluid animation
   const smoothVelocityX = useSpring(xVelocity, { damping: 30, stiffness: 120, mass: 0.8 });
   const smoothVelocityY = useSpring(yVelocity, { damping: 30, stiffness: 120, mass: 0.8 });
 
-  // Map velocity to 3D rotation — same mapping as DraggableWindow
   const rotateY = useTransform(smoothVelocityX, [-800, 0, 800], [-25, 0, 25]);
   const rotateX = useTransform(smoothVelocityY, [-800, 0, 800], [25, 0, -25]);
   const rotateZ = useTransform(smoothVelocityX, [-800, 0, 800], [-5, 0, 5]);
@@ -48,7 +46,7 @@ export default function FloatingLogo({
   return (
     <motion.div
       ref={containerRef}
-      drag
+      drag={!isMobile}
       dragMomentum={true}
       dragElastic={0.1}
       onDragStart={() => setIsDragging(true)}
@@ -56,10 +54,9 @@ export default function FloatingLogo({
       onPointerDown={(e) => e.stopPropagation()}
       onHoverStart={() => setIsHovered(true)}
       onHoverEnd={() => setIsHovered(false)}
-      // Entrance animation — scale from 0, fade in, slight 3D rotate
       initial={{ scale: 0, opacity: 0 }}
       animate={{
-        scale: isHovered ? 1.1 : 1,
+        scale: isHovered && !isMobile ? 1.1 : 1,
         opacity: 1,
         zIndex: isDragging ? 50 : 20,
       }}
@@ -72,13 +69,13 @@ export default function FloatingLogo({
       style={{
         x,
         y,
-        rotateX,
-        rotateY,
-        rotateZ,
-        perspective: 1200,
+        rotateX: isMobile ? 0 : rotateX,
+        rotateY: isMobile ? 0 : rotateY,
+        rotateZ: isMobile ? 0 : rotateZ,
+        perspective: isMobile ? "none" : 1200,
         transformOrigin: "center center",
       }}
-      className={`absolute z-20 cursor-grab active:cursor-grabbing ${isDragging ? "cursor-grabbing" : ""}`}
+      className={`absolute z-20 ${isMobile ? "" : "cursor-grab active:cursor-grabbing"}`}
     >
       {/* 3D Card Container — glassmorphism like DraggableWindow */}
       <div
