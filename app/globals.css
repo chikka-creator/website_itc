@@ -55,7 +55,7 @@ input, textarea, [contenteditable="true"] {
   user-select: text;
 }
 
-/* Prevent image selection and native drag */
+/* Prevent image selection and native drag — but keep pointer-events for drag to work */
 img, svg, video, canvas {
   -webkit-user-select: none;
   -moz-user-select: none;
