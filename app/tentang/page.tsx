@@ -68,7 +68,7 @@ export default function TentangPage() {
         {/* ========== FLOATING DECORATIVE ELEMENTS ========== */}
 
         {/* Sticky Note — top left */}
-        <FloatingCard initialX={-260} initialY={-160} delay={0} rotate={-6}>
+        <FloatingCard initialX={-380} initialY={-220} delay={0} rotate={-6}>
           <div className="w-44 h-44 rounded-lg p-4 flex flex-col justify-between"
             style={{
               background: "linear-gradient(135deg, #fef3c7, #fde68a)",
@@ -88,7 +88,7 @@ export default function TentangPage() {
         </FloatingCard>
 
         {/* Task Card — left center */}
-        <FloatingCard initialX={-220} initialY={30} delay={2} rotate={4}>
+        <FloatingCard initialX={-340} initialY={40} delay={2} rotate={4}>
           <div className="w-48 rounded-xl p-4 glass-panel border border-white/10">
             <div className="flex items-center gap-2 mb-3">
               <div className="w-6 h-6 rounded-md bg-blue-500/20 flex items-center justify-center">
@@ -114,7 +114,7 @@ export default function TentangPage() {
         </FloatingCard>
 
         {/* Reminder Card — top right */}
-        <FloatingCard initialX={220} initialY={-140} delay={1} rotate={5}>
+        <FloatingCard initialX={350} initialY={-200} delay={1} rotate={5}>
           <div className="w-44 rounded-xl p-4 glass-panel border border-white/10">
             <div className="flex items-center justify-between mb-3">
               <span className="text-xs font-bold text-white/80">Reminders</span>
@@ -140,7 +140,7 @@ export default function TentangPage() {
         </FloatingCard>
 
         {/* Stats Card — bottom left */}
-        <FloatingCard initialX={-200} initialY={160} delay={4} rotate={-3}>
+        <FloatingCard initialX={-320} initialY={220} delay={4} rotate={-3}>
           <div className="w-40 rounded-xl p-4 glass-panel border border-white/10">
             <div className="flex items-center gap-2 mb-2">
               <Star size={14} className="text-[var(--color-brand-amber)]" />
@@ -154,7 +154,7 @@ export default function TentangPage() {
         </FloatingCard>
 
         {/* Integration Card — bottom right */}
-        <FloatingCard initialX={230} initialY={140} delay={3} rotate={3}>
+        <FloatingCard initialX={360} initialY={200} delay={3} rotate={3}>
           <div className="w-44 rounded-xl p-4 glass-panel border border-white/10">
             <span className="text-[10px] font-bold text-white/50 uppercase tracking-wider">100+ Integrations</span>
             <div className="flex gap-2 mt-3">
@@ -168,10 +168,10 @@ export default function TentangPage() {
         </FloatingCard>
 
         {/* ========== TOOL LOGOS (existing) ========== */}
-        <FloatingLogo src="/vscode.png" label="VS Code" initialX={-140} initialY={-60} size={64} delay={5} />
-        <FloatingLogo src="/figma.png" label="Figma" initialX={150} initialY={-50} size={64} delay={6} />
-        <FloatingLogo src="/postman.png" label="Postman" initialX={-120} initialY={80} size={56} delay={7} />
-        <FloatingLogo src="/antigravity.png" label="Antigravity" initialX={130} initialY={90} size={56} delay={8} />
+        <FloatingLogo src="/vscode.png" label="VS Code" initialX={-260} initialY={-100} size={64} delay={5} />
+        <FloatingLogo src="/figma.png" label="Figma" initialX={270} initialY={-90} size={64} delay={6} />
+        <FloatingLogo src="/postman.png" label="Postman" initialX={-240} initialY={120} size={56} delay={7} />
+        <FloatingLogo src="/antigravity.png" label="Antigravity" initialX={250} initialY={130} size={56} delay={8} />
 
         {/* ========== HERO TEXT ========== */}
         <div className="relative z-30 text-center px-6 max-w-4xl mx-auto">
