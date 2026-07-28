@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { color, motion } from "framer-motion";
 import MagneticButton from "@/components/shared/MagneticButton";
 import DraggableWindow from "@/components/windows/DraggableWindow";
 import { useState, useEffect } from "react";
@@ -77,7 +77,7 @@ export default function Home() {
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           className="text-display mb-6 tracking-tight text-brand-offwhite"
         >
-          Welcome to <br /> <span className="text-[var(--color-brand-amber)]">ITClub</span>
+          Welcome to <br /> <span className="text-color-[#8AB4D8]">ITClub</span>
         </motion.h1>
 
         <motion.p
