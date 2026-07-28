@@ -77,7 +77,7 @@ export default function Home() {
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           className="text-display mb-6 tracking-tight text-brand-offwhite"
         >
-          Welcome to <br /> <span className="text-[#8AB4D8]">ITClub</span>
+          Welcome to <br /> <span style={{ color: "blue" }}>ITClub</span>
         </motion.h1>
 
         <motion.p
