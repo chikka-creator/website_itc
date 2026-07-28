@@ -89,72 +89,92 @@ export default function ProjectPage() {
                   style={{ x: pos.x, y: pos.y }}
                   onPointerDown={(e) => e.stopPropagation()}
                 >
-                  <div className="w-[280px] sm:w-[320px] md:w-[340px] max-w-[90vw] bg-[#0A0A0A]/95 backdrop-blur-xl rounded-xl overflow-hidden transition-all duration-300 md:hover:scale-105 md:hover:shadow-[0_20px_60px_rgba(162,210,255,0.15)] md:hover:border-[var(--color-brand-amber)]/30 border border-white/10 shadow-[0_10px_40px_rgba(0,0,0,0.5)]">
-                    {/* Terminal Header */}
-                    <div className="flex items-center px-4 py-2.5 bg-[#1C1C1C] border-b border-white/10 relative">
+                  <div className="w-[280px] sm:w-[320px] md:w-[340px] max-w-[90vw] rounded-xl overflow-hidden transition-all duration-300 md:hover:scale-105 md:hover:shadow-[0_20px_60px_rgba(0,255,100,0.08)] md:hover:border-[var(--color-brand-amber)]/40 border border-white/10 shadow-[0_10px_40px_rgba(0,0,0,0.6)] relative"
+                        style={{ background: "linear-gradient(180deg, #111 0%, #0A0A0A 100%)" }}>
+                    {/* Scanline overlay */}
+                    <div className="absolute inset-0 pointer-events-none z-10 opacity-[0.03]" style={{
+                      backgroundImage: "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.05) 2px, rgba(255,255,255,0.05) 4px)",
+                    }} />
+
+                    {/* Terminal Title Bar */}
+                    <div className="flex items-center justify-between px-4 py-2.5 bg-[#1a1a1a] border-b border-white/8 relative">
                       <div className="flex gap-1.5">
-                        <div className="w-2.5 h-2.5 rounded-full bg-[#FF5F56]" />
-                        <div className="w-2.5 h-2.5 rounded-full bg-[#FFBD2E]" />
-                        <div className="w-2.5 h-2.5 rounded-full bg-[#27C93F]" />
+                        <div className="w-2.5 h-2.5 rounded-full bg-[#FF5F56] shadow-[0_0_4px_rgba(255,95,86,0.4)]" />
+                        <div className="w-2.5 h-2.5 rounded-full bg-[#FFBD2E] shadow-[0_0_4px_rgba(255,189,46,0.4)]" />
+                        <div className="w-2.5 h-2.5 rounded-full bg-[#27C93F] shadow-[0_0_4px_rgba(39,201,63,0.4)]" />
                       </div>
-                      <div className="absolute left-1/2 -translate-x-1/2 text-white/30 text-[10px] font-mono truncate max-w-[120px] sm:max-w-[150px]">
-                        ~/{project.title.toLowerCase().replace(/\s+/g, '-')}
+                      <div className="flex items-center gap-1.5 text-white/25 text-[9px] font-mono">
+                        <span>~/{project.title.toLowerCase().replace(/\s+/g, '-')}</span>
                       </div>
+                      <div className="w-[52px]" />
                     </div>
 
-                    {/* Thumbnail */}
-                    <div className="w-full h-40 bg-[#050505] relative flex items-center justify-center overflow-hidden border-b border-white/5">
-                      {project.image_url ? (
-                        <img
-                          src={project.image_url}
-                          alt={project.title}
-                          className="w-full h-full object-cover opacity-80 transition-opacity md:group-hover:opacity-100 duration-500"
-                        />
-                      ) : (
-                        <div className="flex flex-col items-center gap-2 text-white/20">
-                          <FolderKanban size={32} />
-                        </div>
-                      )}
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] to-transparent opacity-80" />
-                      <div className="absolute bottom-3 left-4">
-                        <span className="text-[9px] font-mono font-bold uppercase tracking-widest text-[var(--color-brand-amber)]">
-                          [{project.category}]
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Content */}
-                    <div className="p-5 font-mono">
-                      <div className="flex gap-2 text-brand-offwhite mb-2 items-start">
-                        <span className="text-[var(--color-brand-amber)] shrink-0 mt-0.5 leading-tight">❯</span>
-                        <h3 className="text-[13px] font-bold text-brand-offwhite leading-tight">{project.title}</h3>
-                      </div>
-                      <div className="flex gap-2 text-brand-offwhite/50 mb-5 text-[11px] leading-relaxed">
-                        <span className="text-[var(--color-brand-navy-900)] shrink-0 opacity-0">❯</span>
-                        <p className="line-clamp-2">{project.description}</p>
-                      </div>
-
-                      <div className="flex items-center justify-between border-t border-white/5 pt-4">
-                        {project.author_name ? (
-                          <div className="flex items-center gap-2 text-[10px] text-[var(--color-brand-navy-900)]">
-                            <span className="opacity-50">author:</span>
-                            <span className="text-brand-offwhite/80">"{project.author_name}"</span>
-                          </div>
+                    {/* Terminal Body */}
+                    <div className="font-mono">
+                      {/* Image / Preview area */}
+                      <div className="w-full h-36 bg-[#050505] relative flex items-center justify-center overflow-hidden">
+                        {project.image_url ? (
+                          <img
+                            src={project.image_url}
+                            alt={project.title}
+                            className="w-full h-full object-cover opacity-70 transition-opacity md:group-hover:opacity-100 duration-500"
+                          />
                         ) : (
-                          <div />
+                          <div className="flex flex-col items-center gap-2">
+                            <FolderKanban size={28} className="text-white/10" />
+                            <span className="text-[9px] text-white/10">NO VISUAL ASSET</span>
+                          </div>
                         )}
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-transparent to-transparent opacity-90" />
+                        <div className="absolute bottom-2 left-3 z-10">
+                          <span className="px-2 py-0.5 bg-[var(--color-brand-amber)]/15 border border-[var(--color-brand-amber)]/25 rounded text-[8px] font-mono font-bold uppercase tracking-widest text-[var(--color-brand-amber)]">
+                            {project.category}
+                          </span>
+                        </div>
+                      </div>
 
-                        {project.link_url && (
-                          <a
-                            href={project.link_url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded bg-[var(--color-brand-offwhite)]/5 text-[var(--color-brand-amber)] border border-[var(--color-brand-offwhite)]/10 text-[10px] font-semibold hover:bg-[var(--color-brand-amber)] hover:text-[#0A0A0A] transition-all"
-                          >
-                            <LinkIcon size={10} />
-                            EXECUTE
-                          </a>
-                        )}
+                      {/* Command output area */}
+                      <div className="p-4 bg-[#0A0A0A] space-y-2">
+                        {/* Command line */}
+                        <div className="flex items-start gap-1.5">
+                          <span className="text-[var(--color-brand-amber)] text-[11px] select-none">$</span>
+                          <span className="text-white/40 text-[10px]">cat</span>
+                          <span className="text-white text-[11px] font-bold">./{project.title.toLowerCase().replace(/\s+/g, '-')}</span>
+                        </div>
+
+                        {/* Output */}
+                        <div className="ml-3 border-l border-white/10 pl-3 space-y-1.5">
+                          <div className="flex items-start gap-1.5">
+                            <span className="text-[var(--color-brand-amber)] text-[10px] shrink-0 mt-px">❯</span>
+                            <h3 className="text-[12px] font-bold text-white leading-tight">{project.title}</h3>
+                          </div>
+                          <p className="text-white/40 text-[10px] leading-relaxed line-clamp-2">{project.description}</p>
+                        </div>
+
+                        {/* Footer */}
+                        <div className="flex items-center justify-between pt-2 border-t border-white/5 mt-2">
+                          <div className="flex items-center gap-1.5 text-[9px] text-white/25">
+                            <span className="text-[var(--color-brand-amber)]/50">user:</span>
+                            <span className="text-white/50">"{project.author_name || 'anonymous'}"</span>
+                          </div>
+                          {project.link_url && (
+                            <a
+                              href={project.link_url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-[var(--color-brand-amber)]/10 text-[var(--color-brand-amber)] border border-[var(--color-brand-amber)]/20 text-[9px] font-bold uppercase tracking-wider hover:bg-[var(--color-brand-amber)] hover:text-[#0A0A0A] transition-all"
+                            >
+                              <LinkIcon size={9} />
+                              Execute
+                            </a>
+                          )}
+                        </div>
+
+                        {/* Blinking cursor */}
+                        <div className="flex items-center gap-1.5 pt-1">
+                          <span className="text-[var(--color-brand-amber)] text-[10px]">$</span>
+                          <span className="w-1.5 h-3 bg-[var(--color-brand-amber)] animate-pulse" />
+                        </div>
                       </div>
                     </div>
                   </div>

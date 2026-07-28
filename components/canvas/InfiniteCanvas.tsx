@@ -64,7 +64,8 @@ export default function InfiniteCanvas({ children }: InfiniteCanvasProps) {
 
   return (
     <div
-      className={`relative w-full h-screen overflow-hidden bg-[var(--color-brand-navy-900)] ${isMobile ? "touch-auto" : "touch-none"}`}
+      className={`relative w-full h-screen overflow-hidden ${isMobile ? "touch-auto" : "touch-none"}`}
+      style={{ background: "var(--bg)" }}
       onWheel={handleWheel}
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
