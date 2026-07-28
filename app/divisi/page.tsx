@@ -12,7 +12,7 @@ function DivisionContent({ type }: { type: "programming" | "desain" }) {
   return (
     <div className="flex flex-col gap-6">
       <div className="flex items-center gap-4">
-        <div className="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center flex-shrink-0">
+        <div className="w-14 h-14 rounded-2xl bg-brand-offwhite/5 border border-brand-offwhite/10 flex items-center justify-center flex-shrink-0">
           {isProgramming ? (
             <Code2 className="text-[var(--color-brand-amber)]" size={28} />
           ) : (
@@ -20,7 +20,7 @@ function DivisionContent({ type }: { type: "programming" | "desain" }) {
           )}
         </div>
         <div>
-          <h3 className="text-h2 text-white m-0 leading-tight">
+          <h3 className="text-h2 text-brand-offwhite m-0 leading-tight">
             {isProgramming ? "Programming" : "Desain Grafis"}
           </h3>
           <span className="text-caption">
@@ -29,14 +29,14 @@ function DivisionContent({ type }: { type: "programming" | "desain" }) {
         </div>
       </div>
 
-      <p className="text-body text-white/80">
+      <p className="text-body text-brand-offwhite/80">
         {isProgramming
           ? "Divisi Programming berfokus pada pengembangan perangkat lunak, mulai dari website, aplikasi mobile, hingga struktur database. Kami belajar mengubah logika menjadi solusi digital yang fungsional."
           : "Divisi Desain Grafis mengajarkan seni komunikasi visual. Dari pembuatan logo, poster, UI/UX, hingga aset digital lainnya. Kami belajar membuat karya yang tak hanya indah, namun tepat sasaran."}
       </p>
 
       <div className="space-y-2">
-        <h4 className="text-sm font-semibold tracking-wider text-white/50 uppercase">
+        <h4 className="text-sm font-semibold tracking-wider text-brand-offwhite/50 uppercase">
           Materi Pembelajaran
         </h4>
         <div className="flex flex-wrap gap-2">
@@ -46,7 +46,7 @@ function DivisionContent({ type }: { type: "programming" | "desain" }) {
           ).map((skill) => (
             <span
               key={skill}
-              className="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-xs font-medium text-white/70"
+              className="px-3 py-1.5 rounded-lg bg-brand-offwhite/5 border border-brand-offwhite/10 text-xs font-medium text-brand-offwhite/70"
             >
               {skill}
             </span>
@@ -54,8 +54,8 @@ function DivisionContent({ type }: { type: "programming" | "desain" }) {
         </div>
       </div>
 
-      <div className={`mt-4 h-40 rounded-xl bg-gradient-to-${isProgramming ? "br" : "bl"} from-[var(--color-brand-navy-800)] to-transparent border border-white/5 flex items-center justify-center overflow-hidden`}>
-        <span className="text-xs font-semibold text-white/40 uppercase tracking-widest text-center px-4">
+      <div className={`mt-4 h-40 rounded-xl bg-gradient-to-${isProgramming ? "br" : "bl"} from-[var(--color-brand-navy-800)] to-transparent border border-brand-offwhite/5 flex items-center justify-center overflow-hidden`}>
+        <span className="text-xs font-semibold text-brand-offwhite/40 uppercase tracking-widest text-center px-4">
           Data Sementara <br /> Foto Kegiatan
         </span>
       </div>
@@ -89,7 +89,7 @@ export default function DivisiPage() {
         <h1 className="text-display text-transparent bg-clip-text bg-gradient-to-b from-white to-white/60 mb-6">
           Divisi ITClub
         </h1>
-        <p className="text-h2 text-white/70 font-normal">
+        <p className="text-h2 text-brand-offwhite/70 font-normal">
           Dua jalur keahlian, satu tujuan untuk berinovasi.
         </p>
       </div>

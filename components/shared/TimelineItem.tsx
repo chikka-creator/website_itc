@@ -29,17 +29,17 @@ export default function TimelineItem({
       )}
     >
       <div className={twMerge(clsx("hidden md:block flex-1", reverse ? "text-left" : "text-right"))}>
-        <h3 className="text-h2 text-white mb-4">{title}</h3>
-        <p className="text-body text-white/70">{description}</p>
+        <h3 className="text-h2 text-[var(--color-brand-offwhite)] mb-4">{title}</h3>
+        <p className="text-body text-[var(--color-brand-offwhite)]/70">{description}</p>
       </div>
 
-      <div className="relative z-10 flex-shrink-0 w-14 h-14 rounded-full bg-[var(--color-brand-navy-800)] border-4 border-[var(--color-brand-navy-900)] flex items-center justify-center shadow-[0_0_20px_rgba(245,158,11,0.2)] ml-0 md:ml-[-1px]">
+      <div className="relative z-10 flex-shrink-0 w-14 h-14 rounded-full bg-[var(--color-brand-navy-800)] border-4 border-[var(--color-brand-navy-900)] flex items-center justify-center shadow-[0_0_20px_rgba(255,164,27,0.2)] ml-0 md:ml-[-1px]">
         {icon}
       </div>
 
       <div className="flex-1 md:hidden pl-8">
-        <h3 className="text-h2 text-white mb-4">{title}</h3>
-        <p className="text-body text-white/70">{description}</p>
+        <h3 className="text-h2 text-[var(--color-brand-offwhite)] mb-4">{title}</h3>
+        <p className="text-body text-[var(--color-brand-offwhite)]/70">{description}</p>
       </div>
 
       <div className="hidden md:block flex-1">

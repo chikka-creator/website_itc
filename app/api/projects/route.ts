@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "../auth/[...nextauth]/route";
-import { getAllProjects, getFeaturedProjects, createProject, deleteProject } from "@/lib/db";
+import { getAllProjects, getFeaturedProjects, createProject, deleteProject, updateProject } from "@/lib/db";
 
 // GET: Public - get featured projects, or Admin gets all
 export async function GET(req: Request) {
@@ -74,6 +74,34 @@ export async function DELETE(req: Request) {
     return NextResponse.json({ message: "Project berhasil dihapus" });
   } catch (error) {
     console.error("Error deleting project:", error);
+    return NextResponse.json({ message: "Internal server error" }, { status: 500 });
+  }
+}
+
+// PATCH: Admin only - toggle featured status
+export async function PATCH(req: Request) {
+  try {
+    const session = await getServerSession(authOptions);
+
+    if (!session || !session.user || (session.user as any).role !== "admin") {
+      return NextResponse.json({ message: "Forbidden" }, { status: 403 });
+    }
+
+    const { id, is_featured } = await req.json();
+
+    if (!id || is_featured === undefined) {
+      return NextResponse.json({ message: "ID and is_featured are required" }, { status: 400 });
+    }
+
+    const updated = await updateProject(id, { is_featured });
+
+    if (!updated) {
+      return NextResponse.json({ message: "Project tidak ditemukan" }, { status: 404 });
+    }
+
+    return NextResponse.json({ message: "Project updated", project: updated });
+  } catch (error) {
+    console.error("Error updating project:", error);
     return NextResponse.json({ message: "Internal server error" }, { status: 500 });
   }
 }

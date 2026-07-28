@@ -25,9 +25,11 @@ export default function TentangPage() {
   const timelineLineRef = useRef<HTMLDivElement>(null);
   const timelineProgressRef = useRef<HTMLDivElement>(null);
   const [w, setW] = useState(1024);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setW(window.innerWidth);
+    setMounted(true);
     const onResize = () => setW(window.innerWidth);
     window.addEventListener("resize", onResize);
     return () => window.removeEventListener("resize", onResize);
@@ -76,153 +78,160 @@ export default function TentangPage() {
   const isMobile = w < 640;
 
   return (
-    <div ref={containerRef} className="min-h-screen bg-[var(--color-brand-navy-900)] pb-40">
+    <div ref={containerRef} className="min-h-screen pb-40" style={{ background: "var(--bg)" }}>
       {/* Hero Section */}
       <section className="hero-section relative min-h-[100dvh] h-screen flex flex-col items-center justify-center overflow-hidden">
         <div className="hero-bg absolute inset-0 bg-mesh opacity-50 z-0"></div>
 
         {/* ========== FLOATING DECORATIVE ELEMENTS — RESPONSIVE POSITIONS ========== */}
-
-        {/* Sticky Note — top left */}
-        <FloatingCard
-          initialX={r(-100, -240, -380, w)}
-          initialY={r(-100, -150, -220, w)}
-          delay={0} rotate={r(-3, -5, -6, w)}
-        >
-          <div className="w-28 h-28 sm:w-36 sm:h-36 md:w-44 md:h-44 rounded-lg p-2.5 sm:p-3 md:p-4 flex flex-col justify-between"
-            style={{
-              background: "linear-gradient(135deg, rgba(240,215,140,0.3), rgba(240,215,140,0.15))",
-              boxShadow: "0 8px 24px rgba(245,158,11,0.2), inset 0 -2px 4px rgba(0,0,0,0.05)",
-            }}
-          >
-            <p className="text-[9px] sm:text-[10px] md:text-xs font-medium leading-relaxed" style={{ color: "var(--color-brand-navy-900)" }}>
-              Catatan: Topik bulan ini — React, UI/UX, dan API integration 🚀
-            </p>
-            <div className="flex items-center gap-1.5 mt-auto">
-              <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-[var(--color-brand-slate)] flex items-center justify-center">
-                <Check size={10} className="text-white" />
-              </div>
-              <span className="text-[8px] sm:text-[9px] md:text-[10px] font-semibold" style={{ color: "var(--color-brand-navy-800)" }}>3 tugas selesai</span>
-            </div>
-          </div>
-        </FloatingCard>
-
-        {/* Task Card — left center */}
-        <FloatingCard
-          initialX={r(-90, -200, -340, w)}
-          initialY={r(80, 50, 40, w)}
-          delay={2} rotate={r(2, 3, 4, w)}
-        >
-          <div className="w-36 sm:w-40 md:w-48 rounded-xl p-2.5 sm:p-3 md:p-4 glass-panel border border-white/10">
-            <div className="flex items-center gap-2 mb-2 sm:mb-3">
-              <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-md bg-[var(--color-brand-slate)]/20 flex items-center justify-center">
-                <BookOpen size={10} className="text-[var(--color-brand-slate)]" />
-              </div>
-              <span className="text-[9px] sm:text-[10px] md:text-xs font-bold text-white/80">Today&apos;s tasks</span>
-            </div>
-            <div className="space-y-1.5 sm:space-y-2">
-              {["Buat UI Landing Page", "Setup Database API", "Review Code PR"].map((task, i) => (
-                <div key={i} className="flex items-center gap-1.5 sm:gap-2">
-                  <div className={`w-3 h-3 sm:w-3.5 sm:h-3.5 md:w-4 md:h-4 rounded-sm border flex items-center justify-center ${
-                    i < 2 ? "bg-[var(--color-brand-amber)] border-[var(--color-brand-amber)]" : "border-white/20"
-                  }`}>
-                    {i < 2 && <Check size={8} className="text-white" />}
+        {mounted && (
+          <>
+            {/* Sticky Note — top left */}
+            <FloatingCard
+              initialX={r(-100, -240, -380, w)}
+              initialY={r(-100, -150, -220, w)}
+              delay={0} rotate={r(-3, -5, -6, w)}
+            >
+              <div className="w-28 h-28 sm:w-36 sm:h-36 md:w-44 md:h-44 rounded-sm p-3 md:p-4 flex flex-col justify-between relative bg-[var(--color-brand-amber)] shadow-[4px_12px_24px_rgba(0,0,0,0.15)] border border-black/5" style={{ transform: "rotate(-2deg)" }}>
+                {/* Pushpin */}
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-[var(--color-brand-slate)] shadow-md border-2 border-[var(--color-brand-offwhite)] z-10"></div>
+                <p className="text-[10px] sm:text-[11px] md:text-[13px] font-medium leading-relaxed text-[#2C2C2C] mt-2 italic" style={{ fontFamily: "'Comic Sans MS', cursive, sans-serif" }}>
+                  Catatan: Topik bulan ini — React, UI/UX, dan API integration 🚀
+                </p>
+                <div className="flex items-center mt-auto">
+                  <div className="w-5 h-5 md:w-6 md:h-6 rounded bg-[var(--color-brand-navy-900)] flex items-center justify-center shadow-sm">
+                    <Check size={12} className="text-[var(--color-brand-offwhite)]" />
                   </div>
-                  <span className={`text-[8px] sm:text-[9px] md:text-[11px] ${i < 2 ? "text-white/40 line-through" : "text-white/70"}`}>
-                    {task}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </FloatingCard>
-
-        {/* Reminder Card — top right */}
-        <FloatingCard
-          initialX={r(90, 210, 350, w)}
-          initialY={r(-110, -140, -200, w)}
-          delay={1} rotate={r(3, 4, 5, w)}
-        >
-          <div className="w-32 sm:w-36 md:w-44 rounded-xl p-2.5 sm:p-3 md:p-4 glass-panel border border-white/10">
-            <div className="flex items-center justify-between mb-2 sm:mb-3">
-              <span className="text-[9px] sm:text-[10px] md:text-xs font-bold text-white/80">Reminders</span>
-              <Clock size={11} className="text-white/40" />
-            </div>
-            <div className="space-y-1.5 sm:space-y-2">
-              <div className="bg-white/5 rounded-lg p-2 sm:p-2.5 border border-white/5">
-                <span className="text-[8px] sm:text-[9px] md:text-[10px] font-semibold text-white/60">Today&apos;s Meeting</span>
-                <div className="flex items-center gap-1.5 mt-1">
-                  <Calendar size={8} className="text-[var(--color-brand-amber)]" />
-                  <span className="text-[8px] sm:text-[9px] md:text-[10px] text-[var(--color-brand-amber)]">10:00 - 11:00</span>
                 </div>
               </div>
-              <div className="bg-white/5 rounded-lg p-2 sm:p-2.5 border border-white/5">
-                <span className="text-[8px] sm:text-[9px] md:text-[10px] font-semibold text-white/60">Deadline Project</span>
-                <div className="flex items-center gap-1.5 mt-1">
-                  <Zap size={8} className="text-[var(--color-brand-navy-900)]" />
-                  <span className="text-[8px] sm:text-[9px] md:text-[10px] text-[var(--color-brand-navy-900)]">Besok</span>
+            </FloatingCard>
+
+            {/* Task Card — left center */}
+            <FloatingCard
+              initialX={r(-90, -200, -340, w)}
+              initialY={r(80, 50, 40, w)}
+              delay={2} rotate={r(2, 3, 4, w)}
+            >
+              <div className="relative pt-4">
+                {/* Folder Tab */}
+                <div className="absolute top-0 left-0 w-20 h-6 bg-[var(--color-brand-offwhite)] rounded-t-xl shadow-[0_-4px_10px_rgba(0,0,0,0.04)]"></div>
+                <div className="w-36 sm:w-40 md:w-48 rounded-xl rounded-tl-none p-3 sm:p-4 md:p-5 bg-[var(--color-brand-offwhite)] shadow-[0_15px_40px_rgba(0,0,0,0.12)] relative z-10">
+                  <div className="mb-3">
+                    <span className="text-[10px] md:text-[12px] font-bold text-[#1A1A1A]">Today's tasks</span>
+                  </div>
+                  <div className="space-y-3">
+                    {["Buat UI Landing Page", "Setup Database API"].map((task, i) => (
+                      <div key={i} className="flex flex-col gap-1.5">
+                        <div className="flex items-center gap-2">
+                          <div className={`w-3 h-3 rounded flex items-center justify-center bg-[var(--color-brand-slate)]`}>
+                            <Check size={8} className="text-[var(--color-brand-offwhite)]" />
+                          </div>
+                          <span className="text-[8px] md:text-[9px] text-[#4A4A4A] font-medium">{task}</span>
+                        </div>
+                        <div className="w-full h-1 bg-black/5 rounded-full overflow-hidden">
+                          <div className={`h-full rounded-full ${i === 0 ? "bg-[var(--color-brand-navy-900)] w-[60%]" : "bg-[var(--color-brand-amber)] w-[90%]"}`}></div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </FloatingCard>
+            </FloatingCard>
 
-        {/* Stats Card — bottom left */}
-        <FloatingCard
-          initialX={r(-80, -190, -320, w)}
-          initialY={r(140, 170, 220, w)}
-          delay={4} rotate={r(-2, -3, -3, w)}
-        >
-          <div className="w-28 sm:w-32 md:w-40 rounded-xl p-2.5 sm:p-3 md:p-4 glass-panel border border-white/10">
-            <div className="flex items-center gap-2 mb-2">
-              <Star size={11} className="text-[var(--color-brand-amber)]" />
-              <span className="text-[9px] sm:text-[10px] md:text-xs font-bold text-white/80">Progress</span>
-            </div>
-            <div className="w-full h-1.5 sm:h-1.5 md:h-2 bg-white/10 rounded-full overflow-hidden">
-              <div className="h-full bg-gradient-to-r from-[var(--color-brand-amber)] to-orange-500 rounded-full" style={{ width: "72%" }} />
-            </div>
-            <span className="text-[8px] sm:text-[9px] md:text-[10px] text-white/40 mt-1.5 block">72% minggu ini</span>
-          </div>
-        </FloatingCard>
-
-        {/* Integration Card — bottom right */}
-        <FloatingCard
-          initialX={r(80, 220, 360, w)}
-          initialY={r(120, 150, 200, w)}
-          delay={3} rotate={r(2, 2, 3, w)}
-        >
-          <div className="w-32 sm:w-36 md:w-44 rounded-xl p-2.5 sm:p-3 md:p-4 glass-panel border border-white/10">
-            <span className="text-[8px] sm:text-[9px] md:text-[10px] font-bold text-white/50 uppercase tracking-wider">100+ Integrations</span>
-            <div className="flex gap-1 sm:1.5 md:gap-2 mt-2 sm:mt-2.5 md:mt-3">
-              {["bg-[var(--color-brand-navy-900)]", "bg-[var(--color-brand-slate)]", "bg-[var(--color-brand-amber)]", "bg-[var(--color-brand-navy-800)]"].map((color, i) => (
-                <div key={i} className={`w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8 rounded-lg ${color} flex items-center justify-center shadow-lg`}>
-                  <Zap size={9} className="text-white" />
+            {/* Reminder Card — top right */}
+            <FloatingCard
+              initialX={r(90, 210, 350, w)}
+              initialY={r(-110, -140, -200, w)}
+              delay={1} rotate={r(3, 4, 5, w)}
+            >
+              <div className="relative pt-4">
+                {/* Folder Tab */}
+                <div className="absolute top-0 right-0 w-20 h-6 bg-[var(--color-brand-offwhite)] rounded-t-xl shadow-[0_-4px_10px_rgba(0,0,0,0.04)] flex items-center justify-center">
+                  <span className="text-[8px] font-bold text-[#1A1A1A]">Reminders</span>
                 </div>
-              ))}
-            </div>
-          </div>
-        </FloatingCard>
+                <div className="w-32 sm:w-36 md:w-44 rounded-xl rounded-tr-none p-3 md:p-4 bg-[var(--color-brand-offwhite)] shadow-[0_15px_40px_rgba(0,0,0,0.12)] relative z-10 flex flex-col items-center">
+                  {/* Floating Clock Icon */}
+                  <div className="absolute -top-6 -left-4 w-10 h-10 rounded-xl bg-[var(--color-brand-offwhite)] shadow-[0_8px_20px_rgba(0,0,0,0.1)] flex items-center justify-center border border-black/5">
+                    <Clock size={16} className="text-[#1A1A1A]" />
+                  </div>
+                  <div className="w-full mt-2">
+                    <span className="text-[9px] md:text-[11px] font-bold text-[#1A1A1A] block mb-1">Today's Meeting</span>
+                    <span className="text-[7px] md:text-[8px] text-[#666] block mb-2">Call with mentoring team</span>
+                    <div className="flex items-center justify-center gap-1.5 bg-[var(--color-brand-navy-900)]/10 w-full py-1.5 rounded-md text-[8px] md:text-[9px] text-[var(--color-brand-navy-900)] font-semibold">
+                      <Clock size={9} /> 10:00 - 11:00
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </FloatingCard>
 
-        {/* ========== TOOL LOGOS — RESPONSIVE ========== */}
-        <FloatingLogo src="/vscode.png" label="VS Code" initialX={r(-80, -160, -260, w)} initialY={r(-50, -70, -100, w)} size={r(44, 54, 64, w)} delay={5} />
-        <FloatingLogo src="/figma.png" label="Figma" initialX={r(80, 170, 270, w)} initialY={r(-40, -60, -90, w)} size={r(44, 54, 64, w)} delay={6} />
-        <FloatingLogo src="/postman.png" label="Postman" initialX={r(-70, -150, -240, w)} initialY={r(60, 80, 120, w)} size={r(40, 48, 56, w)} delay={7} />
-        <FloatingLogo src="/antigravity.png" label="Antigravity" initialX={r(70, 160, 250, w)} initialY={r(70, 90, 130, w)} size={r(40, 48, 56, w)} delay={8} />
+            {/* Stats Card — bottom left */}
+            <FloatingCard
+              initialX={r(-80, -190, -320, w)}
+              initialY={r(140, 170, 220, w)}
+              delay={4} rotate={r(-2, -3, -3, w)}
+            >
+              <div className="w-28 sm:w-32 md:w-40 rounded-xl p-3 md:p-4 bg-[var(--color-brand-offwhite)] shadow-[0_15px_40px_rgba(0,0,0,0.12)] border border-black/5">
+                <div className="flex items-center gap-2 mb-3">
+                  <Star size={12} className="text-[var(--color-brand-amber)]" />
+                  <span className="text-[10px] md:text-xs font-bold text-[#1A1A1A]">Progress</span>
+                </div>
+                <div className="w-full h-2 bg-black/5 rounded-full overflow-hidden">
+                  <div className="h-full bg-[var(--color-brand-navy-900)] rounded-full" style={{ width: "72%" }} />
+                </div>
+                <span className="text-[8px] md:text-[10px] text-[#666] mt-2 block font-medium">72% minggu ini</span>
+              </div>
+            </FloatingCard>
+
+            {/* Integration Card — bottom right */}
+            <FloatingCard
+              initialX={r(80, 220, 360, w)}
+              initialY={r(120, 150, 200, w)}
+              delay={3} rotate={r(2, 2, 3, w)}
+            >
+              <div className="relative pt-4">
+                {/* Folder Tab */}
+                <div className="absolute top-0 left-0 w-24 h-6 bg-[var(--color-brand-offwhite)] rounded-t-xl shadow-[0_-4px_10px_rgba(0,0,0,0.04)] flex items-center justify-center">
+                  <span className="text-[7px] md:text-[8px] font-bold text-[#1A1A1A] uppercase tracking-wider">100+ Integrations</span>
+                </div>
+                <div className="w-32 sm:w-36 md:w-44 rounded-xl rounded-tl-none p-3 sm:p-4 bg-[var(--color-brand-offwhite)] shadow-[0_15px_40px_rgba(0,0,0,0.12)] relative z-10 border border-black/5">
+                  <div className="flex gap-2 justify-center mt-1">
+                    {[
+                      { icon: <div className="text-[var(--color-brand-slate)] font-bold text-[10px] md:text-xs">M</div> },
+                      { icon: <div className="text-[var(--color-brand-navy-900)] font-bold text-[10px] md:text-xs">#</div> },
+                      { icon: <div className="text-[var(--color-brand-amber)] font-bold text-[10px] md:text-xs">31</div> }
+                    ].map((item, i) => (
+                      <div key={i} className={`w-7 h-7 md:w-9 md:h-9 rounded-xl bg-[var(--color-brand-offwhite)] shadow-[0_4px_12px_rgba(0,0,0,0.08)] flex items-center justify-center border border-black/5`}>
+                        {item.icon}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </FloatingCard>
+
+            {/* ========== TOOL LOGOS — RESPONSIVE ========== */}
+            <FloatingLogo src="/vscode.png" label="VS Code" initialX={r(-80, -160, -260, w)} initialY={r(-50, -70, -100, w)} size={r(44, 54, 64, w)} delay={5} />
+            <FloatingLogo src="/figma.png" label="Figma" initialX={r(80, 170, 270, w)} initialY={r(-40, -60, -90, w)} size={r(44, 54, 64, w)} delay={6} />
+            <FloatingLogo src="/postman.png" label="Postman" initialX={r(-70, -150, -240, w)} initialY={r(60, 80, 120, w)} size={r(40, 48, 56, w)} delay={7} />
+            <FloatingLogo src="/antigravity.png" label="Antigravity" initialX={r(70, 160, 250, w)} initialY={r(70, 90, 130, w)} size={r(40, 48, 56, w)} delay={8} />
+          </>
+        )}
 
         {/* ========== HERO TEXT ========== */}
         <div className="relative z-30 text-center px-6 max-w-4xl mx-auto">
           <h1 className="text-display mb-4 md:mb-6 text-transparent bg-clip-text bg-gradient-to-b from-white to-white/50">
             Cerita Kami
           </h1>
-          <p className="text-h2 text-white/80 font-normal leading-relaxed max-w-2xl mx-auto">
+          <p className="text-h2 text-brand-offwhite/80 font-normal leading-relaxed max-w-2xl mx-auto">
             Lebih dari sekadar ekstrakurikuler. Kami adalah ruang untuk berkarya, berinovasi, dan belajar bersama.
           </p>
-          <p className="mt-4 md:mt-6 text-xs md:text-sm text-white/30 font-mono hidden md:block">
+          <p className="mt-4 md:mt-6 text-xs md:text-sm text-brand-offwhite/30 font-mono hidden md:block">
             ↓ Geser elemen di sekitar untuk berinteraksi
           </p>
         </div>
 
-        <div className="absolute bottom-24 md:bottom-28 animate-bounce text-white/30 z-30">
+        <div className="absolute bottom-24 md:bottom-28 animate-bounce text-brand-offwhite/30 z-30">
           <ArrowDown size={24} className="md:hidden" />
           <ArrowDown size={28} className="hidden md:block" />
         </div>
@@ -230,7 +239,7 @@ export default function TentangPage() {
 
       {/* Story Timeline */}
       <section className="relative px-6 max-w-4xl mx-auto mt-20">
-        <div ref={timelineLineRef} className="absolute left-[27px] md:left-1/2 top-0 bottom-0 w-[2px] bg-white/10 -translate-x-1/2 rounded-full overflow-hidden">
+        <div ref={timelineLineRef} className="absolute left-[27px] md:left-1/2 top-0 bottom-0 w-[2px] bg-brand-offwhite/10 -translate-x-1/2 rounded-full overflow-hidden">
           <div ref={timelineProgressRef} className="w-full h-0 bg-gradient-to-b from-[var(--color-brand-amber)] to-[var(--color-brand-amber)]"></div>
         </div>
 
@@ -242,7 +251,7 @@ export default function TentangPage() {
             media={
               <div className="glass-panel-light dark:glass-panel p-6 rounded-2xl">
                 <div className="w-full h-48 rounded-xl bg-gradient-to-br from-white/5 to-white/10 flex items-center justify-center relative overflow-hidden">
-                  <span className="text-xs font-semibold text-white/50 uppercase tracking-widest relative z-10">Data Sementara - Foto Kegiatan</span>
+                  <span className="text-xs font-semibold text-brand-offwhite/50 uppercase tracking-widest relative z-10">Data Sementara - Foto Kegiatan</span>
                 </div>
               </div>
             }
@@ -254,10 +263,10 @@ export default function TentangPage() {
             description="Dengan 2 divisi utama: Programming dan Desain Grafis, kami memastikan setiap anggota mendapatkan materi yang terarah dan mendalam sesuai minat mereka."
             icon={<Monitor className="text-[var(--color-brand-amber)]" size={24} />}
             media={
-              <div className="glass-panel p-6 rounded-2xl border-white/5">
+              <div className="glass-panel p-6 rounded-2xl border-brand-offwhite/5">
                 <div className="flex gap-4">
-                  <div className="flex-1 h-32 rounded-xl bg-white/5 border border-white/10"></div>
-                  <div className="flex-1 h-32 rounded-xl bg-white/5 border border-white/10"></div>
+                  <div className="flex-1 h-32 rounded-xl bg-brand-offwhite/5 border border-brand-offwhite/10"></div>
+                  <div className="flex-1 h-32 rounded-xl bg-brand-offwhite/5 border border-brand-offwhite/10"></div>
                 </div>
               </div>
             }
@@ -270,7 +279,7 @@ export default function TentangPage() {
             media={
               <div className="glass-panel-light dark:glass-panel p-6 rounded-2xl">
                 <div className="w-full h-48 rounded-xl bg-gradient-to-br from-white/5 to-white/10 flex items-center justify-center relative overflow-hidden">
-                  <span className="text-xs font-semibold text-white/50 uppercase tracking-widest relative z-10">Data Sementara - Struktur Organisasi</span>
+                  <span className="text-xs font-semibold text-brand-offwhite/50 uppercase tracking-widest relative z-10">Data Sementara - Struktur Organisasi</span>
                 </div>
               </div>
             }

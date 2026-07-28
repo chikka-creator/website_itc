@@ -72,7 +72,7 @@ export default function InfiniteCanvas({ children }: InfiniteCanvasProps) {
       ref={containerRef}
     >
       <div className="absolute inset-0 opacity-10 pointer-events-none" style={{
-        backgroundImage: "radial-gradient(circle at 2px 2px, rgba(255,255,255,0.3) 1px, transparent 0)",
+        backgroundImage: "radial-gradient(circle at 2px 2px, rgba(254,249,239,0.3) 1px, transparent 0)",
         backgroundSize: "40px 40px"
       }} />
 
@@ -95,19 +95,19 @@ export default function InfiniteCanvas({ children }: InfiniteCanvasProps) {
       <div className={`${isMobile ? "absolute bottom-48 right-4" : "absolute top-24 right-6"} glass-panel flex flex-col gap-2 p-2 rounded-xl pointer-events-auto z-50`}>
         <button
           onClick={() => setScale(s => Math.min(s + 0.1, 2))}
-          className="w-12 h-12 rounded-lg flex items-center justify-center bg-white/5 hover:bg-white/10 text-white transition-colors"
+          className="w-12 h-12 rounded-lg flex items-center justify-center bg-[var(--color-brand-offwhite)]/5 hover:bg-[var(--color-brand-offwhite)]/10 text-[var(--color-brand-offwhite)] transition-colors"
         >
           +
         </button>
         <button
           onClick={() => setScale(s => Math.max(s - 0.1, 0.5))}
-          className="w-12 h-12 rounded-lg flex items-center justify-center bg-white/5 hover:bg-white/10 text-white transition-colors"
+          className="w-12 h-12 rounded-lg flex items-center justify-center bg-[var(--color-brand-offwhite)]/5 hover:bg-[var(--color-brand-offwhite)]/10 text-[var(--color-brand-offwhite)] transition-colors"
         >
           -
         </button>
       </div>
 
-      <div className="absolute bottom-20 md:bottom-32 left-1/2 -translate-x-1/2 px-4 py-2 glass-panel rounded-full text-xs text-white/50 pointer-events-none z-50">
+      <div className="absolute bottom-20 md:bottom-32 left-1/2 -translate-x-1/2 px-4 py-2 glass-panel rounded-full text-xs text-[var(--color-brand-offwhite)]/50 pointer-events-none z-50">
         {isMobile ? "Geser untuk navigasi, cubit untuk zoom" : "Drag untuk memindahkan kanvas, Ctrl+Scroll untuk zoom"}
       </div>
     </div>

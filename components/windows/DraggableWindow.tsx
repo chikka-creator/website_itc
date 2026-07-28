@@ -1,7 +1,7 @@
 "use client";
 
-import { motion, useDragControls, useMotionValue, useTransform, useVelocity, useSpring } from "framer-motion";
-import { useState, useRef, useEffect } from "react";
+import { motion, useDragControls, useMotionValue } from "framer-motion";
+import { useState, useRef } from "react";
 import clsx from "clsx";
 import { twMerge } from "tailwind-merge";
 import { GripHorizontal } from "lucide-react";
@@ -28,35 +28,9 @@ export default function DraggableWindow({
   const containerRef = useRef<HTMLDivElement>(null);
   const dragControls = useDragControls();
   const [isDragging, setIsDragging] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
 
-  useEffect(() => {
-    setIsMobile(window.innerWidth < 768);
-  }, []);
-
-  // Motion values to track drag position
   const x = useMotionValue(initialX);
   const y = useMotionValue(initialY);
-
-  // Initialize values
-  useEffect(() => {
-    x.set(initialX);
-    y.set(initialY);
-  }, [initialX, initialY, x, y]);
-
-  // Track velocity to create the "paper pull" effect
-  const xVelocity = useVelocity(x);
-  const yVelocity = useVelocity(y);
-
-  // Make the spring much softer so the animation feels like a fluid drag
-  const smoothVelocityX = useSpring(xVelocity, { damping: 30, stiffness: 120, mass: 0.8 });
-  const smoothVelocityY = useSpring(yVelocity, { damping: 30, stiffness: 120, mass: 0.8 });
-
-  // Map velocity to 3D rotation (tilt) and 2D rotation (skew)
-  // Disabled on mobile for performance (3D transforms are GPU-heavy on phones)
-  const rotateY = useTransform(smoothVelocityX, [-800, 0, 800], [-25, 0, 25]);
-  const rotateX = useTransform(smoothVelocityY, [-800, 0, 800], [25, 0, -25]);
-  const rotateZ = useTransform(smoothVelocityX, [-800, 0, 800], [-5, 0, 5]);
 
   return (
     <motion.div
@@ -64,43 +38,48 @@ export default function DraggableWindow({
       drag
       dragControls={dragControls}
       dragListener={false}
-      dragMomentum={true}
-      dragElastic={0.1}
+      dragMomentum={false}
+      dragElastic={0.12}
+      dragTransition={{
+        bounceStiffness: 300,
+        bounceDamping: 30,
+      }}
       onDragStart={() => {
         setIsDragging(true);
         onFocus?.();
       }}
       onDragEnd={() => setIsDragging(false)}
       onPointerDown={onFocus}
-      initial={{ scale: 0.9, opacity: 0 }}
+      initial={{ opacity: 0, y: initialY + 40 }}
       animate={{
-        scale: isFocused ? 1.02 : 1,
-        opacity: isFocused ? 1 : (isMobile ? 1 : 0.85),
-        filter: isFocused ? "blur(0px)" : (isMobile ? "blur(0px)" : "blur(2px)"),
-        zIndex: isFocused ? 40 : 10
+        opacity: isFocused ? 1 : 0.85,
+        y: initialY,
+        scale: isDragging ? 1.03 : isFocused ? 1.02 : 1,
+        zIndex: isFocused ? 40 : 10,
       }}
-      transition={{ type: "spring", stiffness: 300, damping: 25 }}
+      transition={{
+        type: "spring",
+        stiffness: 300,
+        damping: 30,
+      }}
       style={{
         x,
         y,
-        rotateX: isMobile ? 0 : rotateX,
-        rotateY: isMobile ? 0 : rotateY,
-        rotateZ: isMobile ? 0 : rotateZ,
-        perspective: isMobile ? "none" : 1200,
-        transformOrigin: "center center"
+        willChange: "transform",
       }}
       className={twMerge(
         clsx(
-          "absolute flex flex-col rounded-2xl overflow-hidden transition-shadow duration-300",
-          isFocused ? "glass-panel shadow-2xl" : "glass-panel-light dark:glass-panel shadow-lg",
-          isDragging ? "cursor-grabbing shadow-[0_30px_60px_rgba(0,0,0,0.4)]" : "",
+          "absolute flex flex-col rounded-2xl overflow-hidden",
+          "liquid-glass",
+          isFocused ? "liquid-glass-focused" : "liquid-glass-warm",
+          isDragging ? "cursor-grabbing" : "",
           className
         )
       )}
     >
       {/* Window Header / Drag Handle */}
-      <div 
-        className="flex items-center justify-between px-4 py-3 border-b border-white/10 bg-white/5 cursor-grab active:cursor-grabbing"
+      <div
+        className="flex items-center justify-between px-4 py-3 bg-black/90 border-b border-white/10 cursor-grab active:cursor-grabbing"
         onPointerDown={(e) => dragControls.start(e)}
       >
         <div className="flex items-center gap-2">
@@ -108,9 +87,9 @@ export default function DraggableWindow({
           <span className="text-sm font-semibold tracking-wide text-white/80">{title}</span>
         </div>
         <div className="flex gap-1.5">
-          <div className="w-3 h-3 rounded-full bg-white/20" />
-          <div className="w-3 h-3 rounded-full bg-white/20" />
-          <div className="w-3 h-3 rounded-full bg-white/20" />
+          <div className="w-3 h-3 rounded-full bg-[#FF5F56]" />
+          <div className="w-3 h-3 rounded-full bg-[#FFBD2E]" />
+          <div className="w-3 h-3 rounded-full bg-[#27C93F]" />
         </div>
       </div>
 
